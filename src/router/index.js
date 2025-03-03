@@ -21,7 +21,7 @@ const routes = [
         component: Register
     },
     {
-        path: '/2fa_selection',
+        path: '/2fa',
         name: '2fa Selection',
         component: Selection2fa
     }
