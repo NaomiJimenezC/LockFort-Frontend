@@ -1,13 +1,110 @@
 <script>
+import {Field, Form, useForm } from "vee-validate";
+import * as yup from 'yup';
+import {useRouter} from "vue-router";
+import axios from "axios";
+
 export default {
-  name: "RegisterForm"
-}
+  name: "RegisterForm",
+  components: {Field, Form},
+  setup() {
+    const urlBackend = import.meta.env.VITE_BACKEND_URL;
+    const router = useRouter();
+
+    const onSubmit = async (values, { setErrors }) => {
+      try {
+        await axios.post(`${urlBackend}/auth/register`, values);
+        await router.push("/2fa"); // Redirect on success
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          setErrors(error.response.data.errors);
+        } else if (error.response && error.response.data && error.response.data.message) {
+          setErrors({general: error.response.data.message})
+        }
+        else {
+          console.error("Login failed:", error);
+          setErrors({ general: "Error de inicio de sesión. Inténtelo de nuevo." });
+        }
+      }
+    };
+    const schema = yup.object().shape({
+      username: yup.string().required(),
+      birthday: yup.date().required(),
+      email: yup.string()
+          .required("Email es obligatorio")
+          .matches(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm, "Email no válido"),
+      password: yup.string()
+          .required("Contraseña es obligatoria")
+          .min(8, "La contraseña debe tener al menos 8 caracteres"),
+      confirmPassword: yup.string()
+          .required("Confirmar contraseña es obligatoria")
+          .min(8, "La contraseña debe tener al menos 8 caracteres")
+          .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
+      terms: yup.boolean().required().oneOf([true], 'Debes aceptar los términos y condiciones'),
+    });
+
+
+    return { onSubmit,schema };
+  },
+};
 </script>
 
 <template>
+  <Form @submit="onSubmit">
+    <label for="username">Username</label>
+    <Field
+        id="username"
+        name="username"
+        label="Username"
+        type="text"
+        placeholder="Username"
+    />
 
+    <label for="email">Email</label>
+    <Field
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        placeholder="Email"
+    />
+
+    <label for="birthday">Fecha Nacimiento</label>
+    <Field
+        id="birthday"
+        name="birthday"
+        label="Fecha Nacimiento"
+        type="date"
+        placeholder="Fecha Nacimiento"
+    />
+
+    <label for="password">Contraseña</label>
+    <Field
+        id="password"
+        name="password"
+        label="Contraseña"
+        type="password"
+        placeholder="Contraseña"
+    />
+
+    <label for="password_confirmation">Confirmar contraseña</label>
+    <Field
+        id="password_confirmation"
+        name="password_confirmation"
+        label="Confirmar contraseña"
+        type="password"
+        placeholder="Confirmar contraseña"
+    />
+
+    <div>
+      <Field
+          type="checkbox"
+          name="terms"
+          id="terms"
+      />
+      <label for="terms" class="inline-label">Acepto los términos y condiciones</label>
+    </div>
+
+    <button type="submit">Registrarte</button>
+  </Form>
 </template>
-
-<style scoped>
-
-</style>
