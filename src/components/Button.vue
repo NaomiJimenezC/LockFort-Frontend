@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-  <button type="button" @click="action" text="{{text}}">{{text}}</button>
+  <button type="button" @click="action">{{text}}</button>
 </template>
 <style>
 
