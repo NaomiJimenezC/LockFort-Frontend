@@ -9,6 +9,9 @@ export default {
     action: {
       type: Function,
       default: () => {}
+    },
+    type2fa:{
+      type: String,
     }
   }
 }
@@ -17,6 +20,6 @@ export default {
 <template>
   <button type="button" @click="action" text="{{text}}">{{text}}</button>
 </template>
-<style scoped>
+<style>
 
 </style>

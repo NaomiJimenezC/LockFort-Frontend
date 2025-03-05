@@ -14,7 +14,7 @@ export default {
     const onSubmit = async (values, { setErrors }) => {
       try {
         await axios.post(`${urlBackend}/auth/register`, values);
-        await router.push("/2fa"); // Redirect on success
+        await router.push("/2fa");
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
           setErrors(error.response.data.errors);
