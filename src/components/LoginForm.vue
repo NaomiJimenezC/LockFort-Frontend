@@ -4,17 +4,30 @@ import Button from "@/components/Button.vue";
 import { useRouter } from "vue-router";
 import * as yup from "yup";
 import axios from "axios";
+import router from "@/router/index.js";
+
+const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
 export default {
   name: "LoginForm",
   components: {ErrorMessage, Button, Field, Form },
   setup() {
-    const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
     const router = useRouter();
-    const onSubmit = async (values, { setErrors }) => { // Make onSubmit async and add setErrors
+    const schema = yup.object().shape({
+      email: yup.string().
+      required("contraseña incorrecta")
+          .matches(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm),
+      password: yup.string()
+          .required("Ingrese la contraseña")
+          .min(8),
+    })
+    return { schema };
+  },
+  methods:{
+    async onSubmit (values, { setErrors })  { // Make onSubmit async and add setErrors
       try {
-        const response = await axios.post(`${urlBackend}/auth/login`, values); // Replace with your backend API endpoint
+        await axios.post(`${urlBackend}/auth/login`, values); // Replace with your backend API endpoint
         await router.push("/2fa"); // Redirect on success
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
@@ -27,18 +40,8 @@ export default {
           setErrors({ general: "Error de inicio de sesión. Inténtelo de nuevo." }); // Generic error message
         }
       }
-    };
-    const schema = yup.object().shape({
-      email: yup.string().
-      required("contraseña incorrecta")
-          .matches(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm),
-      password: yup.string()
-          .required("Ingrese la contraseña")
-          .min(8),
-    })
-
-    return { onSubmit,schema };
-  },
+    }
+  }
 };
 </script>
 
