@@ -33,7 +33,8 @@ export default {
   methods: {
     redirectTo(route) {
       router.push(route);
-    }
+    },
+
   }
 };
 </script>

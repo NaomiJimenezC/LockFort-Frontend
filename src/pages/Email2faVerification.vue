@@ -9,27 +9,30 @@ const urlBackend = import.meta.env.VITE_BACKEND_URL;
 export default {
   name: "Email2faVerification",
   components: {ErrorMessage, Field,Form, Button},
-  setup() {
+  methods: {
+    async onSubmit(values, actions) {
+      if (!actions.errors) {
+        console.log("Datos enviados al backend:", values); // Añade esta línea
+        await axios.post(`${urlBackend}/auth/2fa/verify`,values,{withCredentials: true});
+      }
+    },
+     async sendEmail () {
+      const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'}, {withCredentials: true})
+      console.log(response)
+    }
+  },
+   setup() {
     const schema = yup.object().shape({
       code: yup.string()
           .required("Código requerido")
           .matches(/^[0-9]{6}$/, "El código debe ser de 6 dígitos numéricos"),
     });
-    return {schema}
+    return {schema};
   },
-  methods: {
-    async onSubmit(values, actions) {
-      // You can check actions.errors to see if there are validation errors
-      if (!actions.errors) {
-        const response = await axios.post(`${urlBackend}/auth/2fa/setup`,"email")
-        if (response.status === 200) {
-          await axios.post(`${urlBackend}/auth/2fa/verify`,values)
-        }
-      } else {
-        console.log(actions.errors);
-      }
-    }
+  mounted() {
+    this.sendEmail();
   }
+
 };
 </script>
 

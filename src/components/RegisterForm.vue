@@ -3,10 +3,11 @@ import {Field, Form, useForm } from "vee-validate";
 import * as yup from 'yup';
 import {useRouter} from "vue-router";
 import axios from "axios";
+import Button from "@/components/Button.vue";
 
 export default {
   name: "RegisterForm",
-  components: {Field, Form},
+  components: {Button, Field, Form},
   setup() {
     const urlBackend = import.meta.env.VITE_BACKEND_URL;
     const router = useRouter();
@@ -105,6 +106,6 @@ export default {
       <label for="terms" class="inline-label">Acepto los términos y condiciones</label>
     </div>
 
-    <button type="submit">Registrarte</button>
+    <Button type="submit" text="Registrarte"/>
   </Form>
 </template>

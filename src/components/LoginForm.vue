@@ -27,7 +27,7 @@ export default {
   methods:{
     async onSubmit (values, { setErrors })  { // Make onSubmit async and add setErrors
       try {
-        await axios.post(`${urlBackend}/auth/login`, values); // Replace with your backend API endpoint
+        await axios.post(`${urlBackend}/auth/login`, values,{ withCredentials: true }); // Replace with your backend API endpoint
         await router.push("/2fa"); // Redirect on success
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
