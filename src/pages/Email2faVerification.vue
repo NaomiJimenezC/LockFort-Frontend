@@ -3,39 +3,84 @@ import Button from "@/components/Button.vue";
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 import axios from "axios";
+import router from "@/router/index.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
+const REQUEST_CODE_COOLDOWN_SECONDS = 60; // Tiempo de espera en segundos (1 minuto)
 
 export default {
   name: "Email2faVerification",
-  components: {ErrorMessage, Field,Form, Button},
+  components: {ErrorMessage, Field, Form, Button},
+  data() {
+    return {
+      schema: yup.object().shape({
+        code: yup.string()
+            .required("Código requerido")
+            .matches(/^[0-9]{6}$/, "El código debe ser de 6 dígitos numéricos"),
+      }),
+      isRequestCodeButtonDisabled: true, // Inicialmente deshabilitado
+      requestCodeButtonTimer: REQUEST_CODE_COOLDOWN_SECONDS, // Inicializar timer para que empiece con el cooldown
+      requestCodeButtonInterval: null,
+    };
+  },
   methods: {
     async onSubmit(values, actions) {
       if (!actions.errors) {
-        console.log("Datos enviados al backend:", values); // Añade esta línea
-        await axios.post(`${urlBackend}/auth/2fa/verify`,values,{withCredentials: true});
+        try {
+          const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values, {withCredentials: true});
+          if (response.status === 200) {
+            await router.push("/vault");
+          }
+        } catch (error) {
+          console.error("Error en la verificación:", error);
+          alert("Error al verificar el código. Por favor, inténtalo de nuevo.");
+        }
       }
     },
-     async sendEmail () {
-      const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'}, {withCredentials: true})
-      console.log(response)
-    }
-  },
-   setup() {
-    const schema = yup.object().shape({
-      code: yup.string()
-          .required("Código requerido")
-          .matches(/^[0-9]{6}$/, "El código debe ser de 6 dígitos numéricos"),
-    });
-    return {schema};
+    async sendEmail() {
+      if (this.isRequestCodeButtonDisabled) {
+        return; // Si el botón está deshabilitado, no hacer nada
+      }
+
+      try {
+        const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'}, {withCredentials: true});
+        console.log("Solicitud de nuevo código exitosa:", response);
+        // Popup de éxito eliminado
+
+        // Deshabilitar el botón y empezar el temporizador
+        this.disableRequestCodeButton();
+
+      } catch (error) {
+        console.error("Error al solicitar nuevo código:", error);
+        alert("No se pudo solicitar un nuevo código. Por favor, inténtalo de nuevo más tarde.");
+      }
+    },
+    disableRequestCodeButton() {
+      this.isRequestCodeButtonDisabled = true;
+      this.requestCodeButtonTimer = REQUEST_CODE_COOLDOWN_SECONDS;
+      this.requestCodeButtonInterval = setInterval(() => {
+        this.requestCodeButtonTimer--;
+        if (this.requestCodeButtonTimer <= 0) {
+          this.enableRequestCodeButton();
+        }
+      }, 1000);
+    },
+    enableRequestCodeButton() {
+      this.isRequestCodeButtonDisabled = false;
+      this.requestCodeButtonTimer = 0;
+      clearInterval(this.requestCodeButtonInterval);
+      this.requestCodeButtonInterval = null;
+    },
   },
   mounted() {
     this.sendEmail();
-  }
-
+    this.disableRequestCodeButton(); // Deshabilitar al cargar la página
+  },
+  beforeUnmount() {
+    clearInterval(this.requestCodeButtonInterval);
+  },
 };
 </script>
-
 
 <template>
   <section>
@@ -53,9 +98,12 @@ export default {
       />
       <ErrorMessage name="code" class="error-message" />
       <Button type="submit" text="Enviar"/>
-      <Button text="Solicitar código"/>
+      <Button
+          :text="requestCodeButtonTimer > 0 ? `Solicitar código (${requestCodeButtonTimer}s)` : 'Solicitar código'"
+          :disabled="isRequestCodeButtonDisabled"
+          @click="sendEmail"
+      />
     </Form>
-
   </section>
 </template>
 
