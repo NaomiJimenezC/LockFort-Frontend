@@ -6,7 +6,7 @@ import axios from "axios";
 import router from "@/router/index.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
-const REQUEST_CODE_COOLDOWN_SECONDS = 60; // Tiempo de espera en segundos (1 minuto)
+const REQUEST_CODE_COOLDOWN_SECONDS = 60;
 
 export default {
   name: "Email2faVerification",
@@ -18,8 +18,8 @@ export default {
             .required("Código requerido")
             .matches(/^[0-9]{6}$/, "El código debe ser de 6 dígitos numéricos"),
       }),
-      isRequestCodeButtonDisabled: true, // Inicialmente deshabilitado
-      requestCodeButtonTimer: REQUEST_CODE_COOLDOWN_SECONDS, // Inicializar timer para que empiece con el cooldown
+      isRequestCodeButtonDisabled: false,
+      requestCodeButtonTimer: 0,
       requestCodeButtonInterval: null,
     };
   },
@@ -27,7 +27,7 @@ export default {
     async onSubmit(values, actions) {
       if (!actions.errors) {
         try {
-          const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values, {withCredentials: true});
+          const response = await axios.post(`${urlBackend}/2fa/verify`, values, {withCredentials: true});
           if (response.status === 200) {
             await router.push("/vault");
           }
@@ -39,15 +39,13 @@ export default {
     },
     async sendEmail() {
       if (this.isRequestCodeButtonDisabled) {
-        return; // Si el botón está deshabilitado, no hacer nada
+        return;
       }
 
       try {
-        const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'}, {withCredentials: true});
+        const response = await axios.post(`${urlBackend}/2fa/setup`, {'two_factor_type': 'email'}, {withCredentials: true});
         console.log("Solicitud de nuevo código exitosa:", response);
-        // Popup de éxito eliminado
 
-        // Deshabilitar el botón y empezar el temporizador
         this.disableRequestCodeButton();
 
       } catch (error) {
@@ -71,10 +69,6 @@ export default {
       clearInterval(this.requestCodeButtonInterval);
       this.requestCodeButtonInterval = null;
     },
-  },
-  mounted() {
-    this.sendEmail();
-    this.disableRequestCodeButton(); // Deshabilitar al cargar la página
   },
   beforeUnmount() {
     clearInterval(this.requestCodeButtonInterval);

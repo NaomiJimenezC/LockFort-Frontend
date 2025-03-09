@@ -10,10 +10,12 @@ export default {
   components: {Button, Field, Form},
   setup() {
     const urlBackend = import.meta.env.VITE_BACKEND_URL;
+    const csrf = urlBackend.replace(/\/api$/, '');
     const router = useRouter();
 
     const onSubmit = async (values, { setErrors }) => {
       try {
+        await axios.get(`${csrf}/sanctum/csrf-cookie`, {withCredentials: true}).then();
         await axios.post(`${urlBackend}/auth/register`, values);
         await router.push("/2fa");
       } catch (error) {
