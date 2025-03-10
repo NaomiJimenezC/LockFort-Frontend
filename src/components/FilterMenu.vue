@@ -4,29 +4,21 @@
       <ul class="filter-options">
         <li class="filter-item">
           <button class="filter-button" @click="emitSort('ascendente')">
-            <span class="filter-icon">
-              </span>
             Ascendiente
           </button>
         </li>
         <li class="filter-item">
           <button class="filter-button" @click="emitSort('descendente')">
-            <span class="filter-icon">
-              </span>
             Descendiente
           </button>
         </li>
         <li class="filter-item">
           <button class="filter-button" @click="emitSort('antiguo')">
-            <span class="filter-icon">
-              </span>
             Más antigüos
           </button>
         </li>
         <li class="filter-item">
           <button class="filter-button" @click="emitSort('reciente')">
-            <span class="filter-icon">
-              </span>
             Más recientes
           </button>
         </li>
@@ -47,11 +39,6 @@
         type: Array,
         required: true,
       },
-    },
-    data() {
-      return {
-        // No se necesita data local en este componente para la funcionalidad actual
-      };
     },
     methods: {
       /**
@@ -78,7 +65,7 @@
 
   .filter-title {
     color: #1E293B;
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin-bottom: 1rem;
     font-weight: bold;
   }

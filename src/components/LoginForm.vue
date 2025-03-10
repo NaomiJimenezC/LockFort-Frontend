@@ -14,9 +14,6 @@ export default {
   name: "LoginForm",
   components: {ErrorMessage, Button, Field, Form },
   setup() {
-
-    const router = useRouter();
-    
     const schema = yup.object().shape({
       email: yup.string().
       required("contraseña incorrecta")

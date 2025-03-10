@@ -17,7 +17,7 @@ export default {
       try {
         await axios.get(`${csrf}/sanctum/csrf-cookie`, {withCredentials: true}).then();
         await axios.post(`${urlBackend}/auth/register`, values);
-        await router.push("/2fa");
+        await router.push("/login");
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
           setErrors(error.response.data.errors);

@@ -1,52 +1,126 @@
 <template>
-  <section>
+  <section class="vault-view-container">
     <h1>Tus credenciales</h1>
-  </section>
-  <section>
-    <aside>
-      <FilterMenu/>
-    </aside>
+    <section>
+      <!-- Barra de búsqueda que filtra el array de datos -->
+      <SearchBar :data="resultados" @filtered-data="updateResults" />
+      <!-- Botón para crear nueva credencial -->
+      <Button :action="() => router().push({ name: 'New Credential' })" text="+" />
+      <!-- Menú de filtros que podría emitir eventos para ordenar -->
+      <FilterMenu :results="resultadosOrdenados" @sort="handleSortResults" />
+      <!-- Grid de tarjetas: se itera por cada entrada de resultadosOrdenados -->
+      <div class="grid-container">
+        <CredentialCard
+            v-for="credential in resultadosOrdenados"
+            :key="credential.id"
+            :id="credential.id"
+            :title="credential.title"
+            :username="credential.encrypted_username"
+            :dateCreation="credential.created_at"
+            :web_image="credential.web_image"
+        />
+      </div>
+      <!-- Paginación -->
+      <section class="pagination">
+        <Button
+            :disabled="!pagination.prev_page_url"
+            @click="fetchPage(pagination.prev_page_url)"
+            text="Anterior"
+        />
+        <Button
+            :disabled="!pagination.next_page_url"
+            @click="fetchPage(pagination.next_page_url)"
+            text="Siguiente"
+        />
+      </section>
+    </section>
   </section>
 </template>
 
 <script>
-import FilterMenu from '@/components/FilterMenu.vue'; // Asegúrate de que la ruta sea correcta
+import axios from 'axios';
+import FilterMenu from '@/components/FilterMenu.vue';
+import SearchBar from '@/components/SearchBar.vue';
+import Button from '@/components/Button.vue';
+import CredentialCard from '@/components/CredentialCard.vue';
+import router from '@/router/index.js';
 
 export default {
   name: 'VaultView',
   components: {
     FilterMenu,
+    SearchBar,
+    Button,
+    CredentialCard,
   },
-  
+  data() {
+    return {
+      resultados: [],          // Datos originales obtenidos del backend
+      resultadosOrdenados: [], // Datos filtrados/ordenados que se muestran
+      pagination: {
+        current_page: 1,
+        last_page: 1,
+        next_page_url: null,
+        prev_page_url: null,
+      },
+    };
+  },
+  mounted() {
+    this.obtenerDatos('http://localhost/api/credentials?page=1');
+  },
   methods: {
+    router() {
+      return router;
+    },
+    obtenerDatos(url) {
+      axios.get(url)
+          .then(response => {
+            // Se asume que la API devuelve la data paginada en response.data.data
+            this.resultados = response.data.data;
+            // Inicialmente, los datos mostrados son los originales
+            this.resultadosOrdenados = response.data.data;
+            // Actualización de metadatos de paginación
+            this.pagination.current_page = response.data.current_page;
+            this.pagination.last_page = response.data.last_page;
+            this.pagination.next_page_url = response.data.next_page_url;
+            this.pagination.prev_page_url = response.data.prev_page_url;
+          })
+          .catch(error => {
+            console.error('Error al obtener los datos:', error);
+          });
+    },
+    fetchPage(url) {
+      if (url) {
+        this.obtenerDatos(url);
+      }
+    },
+    updateResults(filtered) {
+      // Se actualiza el array de datos mostrados según el filtro aplicado en SearchBar
+      this.resultadosOrdenados = filtered;
+    },
     handleSortResults(sortBy) {
-      /**
-       * Maneja el evento "sort-results" emitido por FilterResults.
-       * @param {string} sortBy - El tipo de ordenamiento ('ascendente', 'descendente', 'antiguo', 'reciente').
-       */
-      console.log('Ordenar por:', sortBy);
-      let sortedArray = [...this.resultados]; // Crear una copia del array original para ordenarlo y no mutar el original
-
+      // Se realiza el ordenamiento según el criterio recibido del FilterMenu
+      let sortedArray = [...this.resultados];
       switch (sortBy) {
         case 'ascendente':
-          sortedArray.sort((a, b) => a.name.localeCompare(b.name)); // Ordenar alfabéticamente ascendente por nombre
+          sortedArray.sort((a, b) => a.nombreSitio.localeCompare(b.nombreSitio));
           break;
         case 'descendente':
-          sortedArray.sort((a, b) => b.name.localeCompare(a.name)); // Ordenar alfabéticamente descendente por nombre
+          sortedArray.sort((a, b) => b.nombreSitio.localeCompare(a.nombreSitio));
           break;
         case 'antiguo':
-          sortedArray.sort((a, b) => new Date(a.dateCreation) - new Date(b.dateCreation)); // Ordenar por fecha de creación más antigua primero
+          sortedArray.sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion));
           break;
         case 'reciente':
-          sortedArray.sort((a, b) => new Date(b.dateCreation) - new Date(a.dateCreation)); // Ordenar por fecha de creación más reciente primero
+          sortedArray.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
           break;
         default:
-          sortedArray = [...this.resultados]; // Si sortBy no coincide con ninguno, volver al orden original
+          sortedArray = [...this.resultados];
       }
-      this.resultadosOrdenados = sortedArray; // Actualizar el array de resultadosOrdenados con el array ordenado
+      this.resultadosOrdenados = sortedArray;
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -60,21 +134,17 @@ h1 {
   color: #2D3748;
 }
 
-.resultados-list {
-  list-style: none;
-  padding: 0;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 20px 0;
 }
 
-.resultado-item {
-  background-color: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  color: #4A5568;
-}
-
-.resultados-list li:last-child {
-  margin-bottom: 0;
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 </style>
