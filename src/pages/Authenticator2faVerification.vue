@@ -4,6 +4,7 @@ import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 import axios from "axios";
 import router from "@/router/index.js";
+import { useAuthStore } from "@/storage/authStorage"; 
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,12 +23,17 @@ export default {
       })
     };
   },
+  setup(){
+    const authStore = useAuthStore(); 
+      return { authStore };
+  },
   methods: {
     async onSubmit(values, actions) {
       if (!actions.errors) {
         try {
           const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values, {withCredentials: true,withXSRFToken: true });
           if (response.status === 200) {
+            this.authStore.login(response.data.user);
             await router.push("/vault")
           }
 

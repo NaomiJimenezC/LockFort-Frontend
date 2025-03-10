@@ -29,18 +29,16 @@
       };
     },
     setup() {
-      const authStore = useAuthStore(); // Usamos el store de autenticación
+      const authStore = useAuthStore(); 
       return { authStore };
   },
     methods: {
       async onSubmit(values, actions) {
         if (!actions.errors) {
           try {
-            // CSRF token request removed
             const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values); // withCredentials and withXSRFToken are globally configured
             if (response.status === 200) {
-                  //APLICAR AQUI EL STORAGE AUTH
-                  this.authStore.login(response.data.user); // Guardamos la info del usuario en el store
+                  this.authStore.login(response.data.user);
                   await router.push("/vault");
               }
 
@@ -55,7 +53,7 @@
           return;
         }
         try {
-          const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'});
+          await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'});
           this.disableRequestCodeButton();
         } catch (error) {
           console.error("Error al solicitar nuevo código:", error);
