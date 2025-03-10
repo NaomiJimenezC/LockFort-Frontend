@@ -16,6 +16,7 @@ export default {
   setup() {
 
     const router = useRouter();
+    
     const schema = yup.object().shape({
       email: yup.string().
       required("contraseña incorrecta")
@@ -29,7 +30,7 @@ export default {
   methods:{
     async onSubmit (values, { setErrors })  {
       try {
-        const crsf_token = await axios.get(`${csrf}/sanctum/csrf-cookie`,{withCredentials: true});
+        const crsf_token = await axios.get(`${csrf}/sanctum/csrf-cookie`,{withCredentials: true,withXSRFToken:true});
 
         if (crsf_token.status === 204 || crsf_token.status === 200) {
           await axios.post(`${urlBackend}/auth/login`, values, { withCredentials: true, withXSRFToken: true });

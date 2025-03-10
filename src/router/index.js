@@ -5,6 +5,8 @@ import Home from "@/pages/Home.vue";
 import Selection2fa from "@/pages/Selection2fa.vue";
 import Email2faVerification from "@/pages/Email2faVerification.vue";
 import Authenticator2faVerification from "@/pages/Authenticator2faVerification.vue";
+import Vault from '@/pages/Vault.vue';
+import PagePassword from '@/pages/PagePassword.vue';
 
 const routes = [
     {
@@ -36,7 +38,15 @@ const routes = [
         path: '/2fa/authenticator_verification',
         name: '2fa_authenticator_verification',
         component: Authenticator2faVerification
-    }
+    },{
+        path: '/vault',
+        name: 'Vault',
+        component: Vault
+    },{
+        path: '/vault/credential/{id}',
+        name: 'Credential',
+        component: PagePassword
+    },
 
 ]
 
