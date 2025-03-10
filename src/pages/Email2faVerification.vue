@@ -4,12 +4,12 @@
   import * as yup from "yup";
   import axios from "axios";
   import router from "@/router/index.js";
+  import { useAuthStore } from "@/storage/authStorage"; 
 
   axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+  axios.defaults.withXSRFToken = true;
 
   const urlBackend = import.meta.env.VITE_BACKEND_URL;
-  const csrf = urlBackend.replace(/\/api$/, '');
 
   const REQUEST_CODE_COOLDOWN_SECONDS = 60;
 
@@ -28,6 +28,10 @@ axios.defaults.withXSRFToken = true;
         requestCodeButtonInterval: null,
       };
     },
+    setup() {
+      const authStore = useAuthStore(); // Usamos el store de autenticación
+      return { authStore };
+  },
     methods: {
       async onSubmit(values, actions) {
         if (!actions.errors) {
@@ -35,6 +39,8 @@ axios.defaults.withXSRFToken = true;
             // CSRF token request removed
             const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values); // withCredentials and withXSRFToken are globally configured
             if (response.status === 200) {
+                  //APLICAR AQUI EL STORAGE AUTH
+                  this.authStore.login(response.data.user); // Guardamos la info del usuario en el store
                   await router.push("/vault");
               }
 
@@ -49,13 +55,8 @@ axios.defaults.withXSRFToken = true;
           return;
         }
         try {
-          // CSRF token request removed
-          const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'}); // withCredentials and withXSRFToken are globally configured
-          console.log("Solicitud de nuevo código exitosa:", response);
-
+          const response = await axios.post(`${urlBackend}/auth/2fa/setup`, {'two_factor_type': 'email'});
           this.disableRequestCodeButton();
-
-
         } catch (error) {
           console.error("Error al solicitar nuevo código:", error);
           alert("No se pudo solicitar un nuevo código. Por favor, inténtalo de nuevo más tarde.");
