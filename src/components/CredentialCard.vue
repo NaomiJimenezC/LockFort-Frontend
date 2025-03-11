@@ -1,8 +1,8 @@
 <template>
-    <article class="card" @click="redirectTo(`/credential/${id}`)" style="cursor: pointer;">
+    <article class="card" @click="redirectTo(`vault/credential/${id}`)" style="cursor: pointer;">
       <section class="card-content">
         <header>
-          <img :src="imageUrl" /> <h3>{{ title }}</h3>
+          <img :src="web_image" /> <h3>{{ title }}</h3>
         </header>
         <main class="info">
           <p>{{ username }}</p>

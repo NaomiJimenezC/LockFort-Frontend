@@ -2,13 +2,9 @@
   <section class="vault-view-container">
     <h1>Tus credenciales</h1>
     <section>
-      <!-- Barra de búsqueda que filtra el array de datos -->
       <SearchBar :data="resultados" @filtered-data="updateResults" />
-      <!-- Botón para crear nueva credencial -->
       <Button :action="() => router().push({ name: 'New Credential' })" text="+" />
-      <!-- Menú de filtros que podría emitir eventos para ordenar -->
       <FilterMenu :results="resultadosOrdenados" @sort="handleSortResults" />
-      <!-- Grid de tarjetas: se itera por cada entrada de resultadosOrdenados -->
       <div class="grid-container">
         <CredentialCard
             v-for="credential in resultadosOrdenados"
@@ -103,16 +99,16 @@ export default {
       let sortedArray = [...this.resultados];
       switch (sortBy) {
         case 'ascendente':
-          sortedArray.sort((a, b) => a.nombreSitio.localeCompare(b.nombreSitio));
+          sortedArray.sort((a, b) => a.title.localeCompare(b.title));
           break;
         case 'descendente':
-          sortedArray.sort((a, b) => b.nombreSitio.localeCompare(a.nombreSitio));
+          sortedArray.sort((a, b) => b.title.localeCompare(a.title));
           break;
         case 'antiguo':
-          sortedArray.sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion));
+          sortedArray.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
           break;
         case 'reciente':
-          sortedArray.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
+          sortedArray.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
           break;
         default:
           sortedArray = [...this.resultados];

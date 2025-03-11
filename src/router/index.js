@@ -6,8 +6,9 @@ import Selection2fa from "@/pages/Selection2fa.vue";
 import Email2faVerification from "@/pages/Email2faVerification.vue";
 import Authenticator2faVerification from "@/pages/Authenticator2faVerification.vue";
 import Vault from '@/pages/Vault.vue';
-import PagePassword from '@/pages/PagePassword.vue';
+import CredentialPage from '@/pages/CredentialPage.vue';
 import NewCredential from "@/pages/NewCredential.vue";
+import EditCredentialInfo from "@/pages/EditCredentialInfo.vue";
 
 const routes = [
     {
@@ -49,9 +50,14 @@ const routes = [
         component: NewCredential
     },
     {
-        path: '/vault/credential/{id}',
+        path: '/vault/credential/:id',
         name: 'Credential',
-        component: PagePassword
+        component: CredentialPage
+    },
+    {
+        path: '/vault/credential/:id/edit',
+        name: 'Edit Credential',
+        component: EditCredentialInfo
     },
 
 ]

@@ -1,7 +1,13 @@
 <template>
   <div class="new-credential">
     <h2>Editar Credencial</h2>
-    <Form :validation-schema="schema" @submit="onSubmit">
+    <Form
+        v-if="credential"
+        :initial-values="initialValuesWithoutWebPhoto"
+        :validation-schema="schema"
+        @submit="onSubmit"
+        :key="credential.id"
+    >
       <div class="form-group">
         <label for="title">Título</label>
         <Field name="title" type="text" id="title" placeholder="Ingresa el título" />
@@ -46,28 +52,30 @@
         <ErrorMessage name="web_photo" class="error-message" />
       </div>
 
-      <button type="submit">Crear Credencial</button>
+      <button type="submit">Editar Credencial</button>
     </Form>
+    <div v-else class="loading-message">
+      ⏳ Cargando información de la credencial...
+    </div>
   </div>
 </template>
 
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import axios from "axios";
-import router from "@/router/index.js";
-
-const urlBackend = import.meta.env.VITE_BACKEND_URL;
+import axios from 'axios';
+import router from '@/router/index.js';
 
 export default {
-  name: "EditCredentialForm",
+  name: 'EditCredentialForm',
   components: {
     Form,
     Field,
-    ErrorMessage,
+    ErrorMessage
   },
   data() {
     return {
+      credential: null,
       schema: yup.object({
         title: yup.string().required('El título es requerido'),
         encrypted_username: yup.string().required('El usuario es requerido'),
@@ -90,10 +98,22 @@ export default {
                 'fileType',
                 'Formato de imagen no soportado, solo se permiten jpg y png',
                 value => !value || ['image/jpeg', 'image/png'].includes(value.type)
-            ),
+            )
       }),
-      selectedFile: null, 
+      selectedFile: null
     };
+  },
+  computed: {
+    initialValuesWithoutWebPhoto() {
+      if (!this.credential) return {}; // Return empty object if credential is null
+
+      const { web_photo, ...restOfCredential } = this.credential;
+      return restOfCredential;
+    }
+  },
+  created() {
+    this.id = this.$route.params.id;
+    this.fetchCredential();
   },
   methods: {
     handleFileChange(event) {
@@ -104,30 +124,62 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
+        reader.onerror = error => reject(error);
       });
     },
-    
+    async fetchCredential() {
+      try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
+            { withCredentials: true }
+        );
+        if (response.data) {
+          this.credential = response.data;
+          console.log(response.data);
+        } else {
+          throw new Error('La credencial no existe');
+        }
+      } catch (err) {
+        console.error('Error al obtener la credencial:', err);
+      }
+    },
     onSubmit(values) {
+      // Create a copy of values to avoid modifying the original object
       const formData = { ...values };
+
+
       if (this.selectedFile) {
         this.convertToBase64(this.selectedFile)
             .then(base64 => {
               formData.web_photo = base64;
-              console.log('Datos a enviar:', formData);
-              axios.put(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
-              router.push({ name: 'Vault' })
+              axios.put(
+                  `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
+                  formData,
+                  { withCredentials: true, withXSRFToken: true }
+              ).then(() => {
+                router.push({ name: 'Vault' });
+              }).catch(error => {
+                console.error('Error al actualizar la credencial:', error);
+              });
+
             })
             .catch(error => {
               console.error('Error al procesar la imagen:', error);
             });
       } else {
-          console.log('Datos a enviar:', formData);
-        axios.put(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
-        router.push({ name: 'Vault' })
+        axios.put(
+            `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
+            formData,
+            { withCredentials: true, withXSRFToken: true }
+        ).then(() => {
+          router.push({ name: 'Vault' });
+        }).catch(error => {
+          console.error('Error al actualizar la credencial (sin imagen):', error);
+        });
+
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -175,5 +227,10 @@ button:hover {
   color: red;
   font-size: 0.9em;
   margin-top: 5px;
+}
+.loading-message {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
 }
 </style>
