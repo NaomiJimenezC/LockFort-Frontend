@@ -1,6 +1,6 @@
 <template>
   <div class="new-credential">
-    <h2>Nueva Credencial</h2>
+    <h2>Editar Credencial</h2>
     <Form :validation-schema="schema" @submit="onSubmit">
       <div class="form-group">
         <label for="title">Título</label>
@@ -56,12 +56,11 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import axios from "axios";
 import router from "@/router/index.js";
-import { convertToWebp } from '@/helpers/imagesHelper.js'; // Importa convertToWebp
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
 export default {
-  name: "NewCredentialForm",
+  name: "EditCredentialForm",
   components: {
     Form,
     Field,
@@ -93,23 +92,30 @@ export default {
                 value => !value || ['image/jpeg', 'image/png'].includes(value.type)
             ),
       }),
-      selectedFile: null, // Para manejar el archivo seleccionado
+      selectedFile: null, 
     };
   },
   methods: {
     handleFileChange(event) {
       this.selectedFile = event.target.files[0];
     },
-    // convertToBase64 function removed
-
+    convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    },
+    
     onSubmit(values) {
       const formData = { ...values };
       if (this.selectedFile) {
-        convertToWebp(this.selectedFile) // Usa la función convertToWebp importada
-            .then(webpBase64 => {
-              formData.web_photo = webpBase64;
+        this.convertToBase64(this.selectedFile)
+            .then(base64 => {
+              formData.web_photo = base64;
               console.log('Datos a enviar:', formData);
-              axios.post(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
+              axios.put(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
               router.push({ name: 'Vault' })
             })
             .catch(error => {
@@ -117,7 +123,7 @@ export default {
             });
       } else {
           console.log('Datos a enviar:', formData);
-        axios.post(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
+        axios.put(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
         router.push({ name: 'Vault' })
       }
     },
