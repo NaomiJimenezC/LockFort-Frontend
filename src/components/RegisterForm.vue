@@ -10,27 +10,28 @@ export default {
   data() {
     const urlBackend = import.meta.env.VITE_BACKEND_URL;
     const csrf = urlBackend.replace(/\/api$/, '');
+    const schema = yup.object().shape({
+      username: yup.string().required(),
+      birthday: yup.date().required(),
+      email: yup.string()
+        .required("Email es obligatorio")
+        .matches(
+          /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm,
+          "Email no válido"
+        ),
+      password: yup.string()
+        .required("Contraseña es obligatoria")
+        .min(8, "La contraseña debe tener al menos 8 caracteres"),
+      confirmPassword: yup.string()
+        .required("Confirmar contraseña es obligatoria")
+        .min(8, "La contraseña debe tener al menos 8 caracteres")
+        .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
+      terms: yup.boolean()
+        .required()
+        .oneOf([true], 'Debes aceptar los términos y condiciones'),
+    });
     return {
-      schema: yup.object().shape({
-        username: yup.string().required(),
-        birthday: yup.date().required(),
-        email: yup.string()
-          .required("Email es obligatorio")
-          .matches(
-            /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm,
-            "Email no válido"
-          ),
-        password: yup.string()
-          .required("Contraseña es obligatoria")
-          .min(8, "La contraseña debe tener al menos 8 caracteres"),
-        confirmPassword: yup.string()
-          .required("Confirmar contraseña es obligatoria")
-          .min(8, "La contraseña debe tener al menos 8 caracteres")
-          .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
-        terms: yup.boolean()
-          .required()
-          .oneOf([true], 'Debes aceptar los términos y condiciones'),
-      }),
+      schema,
       urlBackend,
       csrf
     };
@@ -39,7 +40,7 @@ export default {
     async onSubmit(values, { setErrors }) {
       try {
         await axios.get(`${this.csrf}/sanctum/csrf-cookie`, { withCredentials: true });
-        await axios.post(`${this.urlBackend}/auth/register`, values);
+        await axios.post(`${this.urlBackend}/auth/register`, values, { withCredentials: true, withXSRFToken: true });
         await this.$router.push("/login");
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
@@ -48,7 +49,7 @@ export default {
           setErrors({ general: error.response.data.message });
         } else {
           console.error("Login failed:", error);
-          setErrors({ general: "Error de inicio de sesión. Inténtelo de nuevo." });
+          setErrors({ general: "Error de registro. Inténtelo de nuevo." });
         }
       }
     }
