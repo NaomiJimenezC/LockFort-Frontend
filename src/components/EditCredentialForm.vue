@@ -65,6 +65,7 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import axios from 'axios';
 import router from '@/router/index.js';
+import {convertToWebp} from "@/helpers/imagesHelper.js";
 
 export default {
   name: 'EditCredentialForm',
@@ -119,14 +120,6 @@ export default {
     handleFileChange(event) {
       this.selectedFile = event.target.files[0];
     },
-    convertToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
-    },
     async fetchCredential() {
       try {
         const response = await axios.get(
@@ -135,7 +128,6 @@ export default {
         );
         if (response.data) {
           this.credential = response.data;
-          console.log(response.data);
         } else {
           throw new Error('La credencial no existe');
         }
@@ -144,14 +136,17 @@ export default {
       }
     },
     onSubmit(values) {
-      // Create a copy of values to avoid modifying the original object
       const formData = { ...values };
+      delete formData.web_photo; // Remove web_photo from formData initially
 
+      console.log('onSubmit called, selectedFile:', this.selectedFile); // Debug: Check selectedFile value
 
       if (this.selectedFile) {
-        this.convertToBase64(this.selectedFile)
+        convertToWebp(this.selectedFile)
             .then(base64 => {
-              formData.web_photo = base64;
+              formData.web_photo = base64; // Add web_photo only if conversion is successful
+              console.log('convertToWebp success, formData with web_photo:', formData); // Debug: Check formData before PUT
+
               axios.put(
                   `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
                   formData,
@@ -161,12 +156,12 @@ export default {
               }).catch(error => {
                 console.error('Error al actualizar la credencial:', error);
               });
-
             })
             .catch(error => {
               console.error('Error al procesar la imagen:', error);
             });
       } else {
+        console.log('No new file selected, formData without web_photo:', formData); // Debug: Check formData before PUT (no image)
         axios.put(
             `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
             formData,
@@ -176,7 +171,6 @@ export default {
         }).catch(error => {
           console.error('Error al actualizar la credencial (sin imagen):', error);
         });
-
       }
     }
   }
