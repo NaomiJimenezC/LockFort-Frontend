@@ -34,7 +34,6 @@ export default {
     redirectTo(route) {
       router.push(route);
     },
-
   }
 };
 </script>

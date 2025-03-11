@@ -25,11 +25,9 @@ export default {
   },
   methods: {
     handleInput() {
-      // Se filtra el array basándose en la propiedad 'title'
       const filtered = this.data.filter(item =>
           item.title.toLowerCase().includes(this.query.toLowerCase())
       );
-      // Se emite el array filtrado para que el componente padre lo reciba
       this.$emit('filtered-data', filtered);
     },
   },
