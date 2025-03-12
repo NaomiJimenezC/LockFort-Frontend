@@ -32,11 +32,6 @@
         router.push(route);
       },
     },
-    computed: {
-      imageUrl() {
-        return `data:image/webp;base64,${this.web_image}`;
-      },
-    },
   };
   </script>
 

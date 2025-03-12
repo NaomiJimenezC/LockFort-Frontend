@@ -11,6 +11,7 @@ import NewCredential from "@/pages/NewCredential.vue";
 import EditCredentialInfo from "@/pages/EditCredentialInfo.vue";
 import ProfileUser from '@/pages/ProfileUser.vue';
 import EditCredentialForm from '@/components/EditCredentialForm.vue';
+import EditProfileForm from '@/components/EditProfileForm.vue';
 
 const routes = [
     {
@@ -69,7 +70,7 @@ const routes = [
     {
         path: '/user/edit-profile',
         name: 'Edit profile',
-        component: EditCredentialForm
+        component: EditProfileForm
     }
 
 ]

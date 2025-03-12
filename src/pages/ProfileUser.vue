@@ -3,10 +3,10 @@
       <header class="profile-header">
         <h1 class="profile-title">Perfil de Usuario</h1>
       </header>
-  
+
       <main v-if="currentUser" class="profile-content">
         <dl class="profile-info">
-          
+
           <div class="profile-item">
             <dt>Nombre de usuario:</dt>
             <dd>{{ currentUser.username }}</dd>
@@ -24,21 +24,21 @@
             <dd>{{ formattedTwoFactorType }}</dd>
           </div>
         </dl>
-        <Button :action="editProfile" text="Enviar">Enviar</Button>
+        <Button :action="editProfile" text="Enviar"/>
       </main>
-  
+
       <section v-else class="loading-container">
         <p class="loading-text">Cargando perfil...</p>
       </section>
     </article>
   </template>
-  
+
   <script>
 import router from '@/router/index';
 import { useAuthStore } from '@/storage/authStorage';
 import Button from '@/components/Button.vue';
 
-  
+
   export default {
     name: 'UserProfile',
     components:{Button},
@@ -47,16 +47,11 @@ import Button from '@/components/Button.vue';
         const authStore = useAuthStore();
         return authStore.user;
       },
-      
+
       formattedBirthday() {
         return this.formatDate(this.currentUser && this.currentUser.birthday);
       },
-      formatted2FASentAt() {
-        return this.currentUser && this.currentUser.email_2fa_code_sent_at 
-          ? this.formatDate(this.currentUser.email_2fa_code_sent_at)
-          : 'Nunca';
-      },
-     
+
       formattedTwoFactorType() {
         if (this.currentUser && this.currentUser.two_factor_type) {
           return this.currentUser.two_factor_type.charAt(0).toUpperCase() +
@@ -79,11 +74,11 @@ import Button from '@/components/Button.vue';
       },
       editProfile() {
         this.$router.push({ name: 'Edit profile' });
-    }   
+    }
     }
   };
   </script>
-  
+
   <style scoped>
   .user-profile {
     max-width: 800px;
@@ -93,50 +88,49 @@ import Button from '@/components/Button.vue';
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
   .profile-header {
     text-align: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
   }
-  
+
   .profile-title {
     color: #333;
     font-size: 24px;
   }
-  
+
   .profile-content {
     padding: 20px;
   }
-  
+
   .profile-info {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
   }
-  
+
   .profile-item dt {
     font-weight: bold;
     color: #6c757d;
     margin-bottom: 5px;
   }
-  
+
   .profile-item dd {
     margin: 0;
     color: #333;
   }
-  
+
   .loading-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 200px;
   }
-  
+
   .loading-text {
     color: #666;
     font-style: italic;
   }
   </style>
-  
