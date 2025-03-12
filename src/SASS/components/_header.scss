@@ -1,0 +1,75 @@
+/* _header.scss */
+
+@use "../abstracts/variables" as v; // Import variables
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem; // Example padding, adjust as needed
+  background-color: var(--color-primario-800);
+
+  &__section {
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    width: var(--desktop-h1); // Example logo size, adjust based on your asset
+    height: auto;
+    margin-right: 1rem;
+  }
+
+  &__title {
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h1); // Example title size - H2 desktop from your variables
+    color: var(--color-secundario-800); // Example text color - lightest secondary color, adjust as needed
+    margin: 0;
+  }
+
+  &__nav {
+    // Styles for the nav container if needed
+  }
+
+  &__list {
+    list-style: none; // Redundant, already reset in reset.scss but good for component isolation if needed
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__item {
+    margin-left: 1.5rem; // Spacing between nav items, adjust as needed
+    color: var(--color-secundario-800);
+  }
+
+  &__icon {
+    font-size: 1.5rem; // Example icon size, adjust as needed
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+  }
+}
+
+/* Responsive styles - Example for mobile */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.8rem 1.5rem; // Adjust padding for smaller screens
+
+    &__logo {
+      width: 2rem; // Slightly smaller logo on mobile
+    }
+
+    &__title {
+      font-size: var(--mobile-h1); // Use mobile H2 size from variables
+    }
+
+    &__item {
+      margin-left: 1rem; // Adjust item spacing on mobile
+    }
+
+    &__icon {
+      font-size: 1.3rem;
+    }
+  }
+}

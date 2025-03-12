@@ -1,12 +1,11 @@
 <template>
-  <header>
+  <header class="header">
     <section>
-      <img src="@/assets/lockfort.svg" alt="logo" />
+      <img class="" src="@/assets/lockfort.svg" alt="logo" />
       <h1>LockFort</h1>
     </section>
 
     <nav>
-      <!-- Si el usuario NO está logueado -->
       <ul v-if="!authStore.isLoggedIn">
         <li>
           <font-awesome-icon icon="fa-solid fa-lightbulb" />
@@ -14,7 +13,6 @@
         </li>
       </ul>
 
-      <!-- Si el usuario SÍ está logueado -->
       <ul v-else>
         <li>
           <font-awesome-icon icon="fa-solid fa-lightbulb" />
@@ -60,5 +58,6 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="sass">
+@use "@/SASS/components/header"
 </style>
