@@ -69,7 +69,8 @@ export default {
       return router;
     },
     obtenerDatos(url) {
-      axios.get(url)
+      console.log(localStorage.getItem('auth'))
+      axios.get(url,{withCredentials:true,withXSRFToken:true})
           .then(response => {
             // Se asume que la API devuelve la data paginada en response.data.data
             this.resultados = response.data.data;

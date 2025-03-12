@@ -9,6 +9,8 @@ import Vault from '@/pages/Vault.vue';
 import CredentialPage from '@/pages/CredentialPage.vue';
 import NewCredential from "@/pages/NewCredential.vue";
 import EditCredentialInfo from "@/pages/EditCredentialInfo.vue";
+import ProfileUser from '@/pages/ProfileUser.vue';
+import EditCredentialForm from '@/components/EditCredentialForm.vue';
 
 const routes = [
     {
@@ -59,6 +61,16 @@ const routes = [
         name: 'Edit Credential',
         component: EditCredentialInfo
     },
+    {
+        path: '/user',
+        name: 'User',
+        component: ProfileUser
+    },
+    {
+        path: '/user/edit-profile',
+        name: 'Edit profile',
+        component: EditCredentialForm
+    }
 
 ]
 
