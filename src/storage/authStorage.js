@@ -1,4 +1,3 @@
-// stores/authStorage.js
 import { defineStore } from 'pinia';
 
 export const useAuthStore = defineStore('auth', {
@@ -6,14 +5,27 @@ export const useAuthStore = defineStore('auth', {
     user: null,
   }),
 
-  actions: {
-    login(userData) {
-      this.user = userData; // Guarda el usuario en el estado
-    },
-    logout() {
-      this.user = null; // Elimina el usuario del estado
-    }
+  getters: {
+    isLoggedIn: (state) => !!state.user,
+    getUser: (state) => state.user,
   },
 
-  persist: true, // Activa la persistencia con el plugin
+  actions: {
+    login(userData) {
+      this.user = userData;
+    },
+    logout() {
+      this.user = null;
+    },
+  },
+
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: 'auth',
+        storage: sessionStorage, // Cambiado de localStorage a sessionStorage
+      },
+    ],
+  },
 });

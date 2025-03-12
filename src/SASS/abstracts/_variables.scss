@@ -1,0 +1,21 @@
+/* variables.scss */
+@use "./colours";
+
+:root {
+  /* Fuentes */
+  --tipografia-titulos: 'Lexend', sans-serif;
+
+  /* Tipografías Desktop */
+  --desktop-h1: 64px;
+  --desktop-h2: 32px;
+  --desktop-h3: 16px;
+  --desktop-parrafo: 14px;
+  --desktop-bold: 14px;
+
+  /* Tipografías Mobile */
+  --mobile-h1: 32px;
+  --mobile-h2: 24px;
+  --mobile-parrafo: 16px;
+  --mobile-bold: 16px;
+  --mobile-smaltes: 12px;
+}

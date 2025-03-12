@@ -61,11 +61,11 @@
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from 'vee-validate';
+import {ErrorMessage, Field, Form} from 'vee-validate';
 import * as yup from 'yup';
 import axios from 'axios';
 import router from '@/router/index.js';
-import {convertToWebp} from "@/helpers/imagesHelper.js";
+import {convertToWebp} from '@/helpers/imagesHelper.js';
 
 export default {
   name: 'EditCredentialForm',
@@ -106,10 +106,9 @@ export default {
   },
   computed: {
     initialValuesWithoutWebPhoto() {
-      if (!this.credential) return {}; // Return empty object if credential is null
-
-      const { web_photo, ...restOfCredential } = this.credential;
-      return restOfCredential;
+      if (!this.credential) return {};
+      const { web_photo, ...rest } = this.credential;
+      return rest;
     }
   },
   created() {
@@ -135,43 +134,27 @@ export default {
         console.error('Error al obtener la credencial:', err);
       }
     },
-    onSubmit(values) {
+    async onSubmit(values) {
       const formData = { ...values };
-      delete formData.web_photo; // Remove web_photo from formData initially
-
-      console.log('onSubmit called, selectedFile:', this.selectedFile); // Debug: Check selectedFile value
 
       if (this.selectedFile) {
-        convertToWebp(this.selectedFile)
-            .then(base64 => {
-              formData.web_photo = base64; // Add web_photo only if conversion is successful
-              console.log('convertToWebp success, formData with web_photo:', formData); // Debug: Check formData before PUT
-
-              axios.put(
-                  `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
-                  formData,
-                  { withCredentials: true, withXSRFToken: true }
-              ).then(() => {
-                router.push({ name: 'Vault' });
-              }).catch(error => {
-                console.error('Error al actualizar la credencial:', error);
-              });
-            })
-            .catch(error => {
-              console.error('Error al procesar la imagen:', error);
-            });
-      } else {
-        console.log('No new file selected, formData without web_photo:', formData); // Debug: Check formData before PUT (no image)
-        axios.put(
-            `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
-            formData,
-            { withCredentials: true, withXSRFToken: true }
-        ).then(() => {
-          router.push({ name: 'Vault' });
-        }).catch(error => {
-          console.error('Error al actualizar la credencial (sin imagen):', error);
-        });
+        try {
+          formData.web_photo = await convertToWebp(this.selectedFile);
+        } catch (error) {
+          console.error('Error al procesar la imagen:', error);
+          return; // Detener el proceso si hay error en la conversión
+        }
       }
+
+      axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
+          formData,
+          { withCredentials: true, withXSRFToken: true }
+      ).then(() => {
+        router.push({ name: 'Vault' });
+      }).catch(error => {
+        console.error('Error al actualizar la credencial:', error);
+      });
     }
   }
 };
@@ -222,6 +205,7 @@ button:hover {
   font-size: 0.9em;
   margin-top: 5px;
 }
+
 .loading-message {
   text-align: center;
   padding: 2rem;
