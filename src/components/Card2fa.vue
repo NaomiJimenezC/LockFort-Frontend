@@ -1,18 +1,22 @@
 <template>
-  <article class="card">
-    <section class="card-content">
-      <header>
-        <h2>{{ title }}</h2>
+  <article class="card2fa">
+    <section class="card2fa-content">
+      <header class="card2fa__header">
+        <h2 >{{ title }}</h2>
       </header>
-      <div class="info">
-          <p v-for="(item, index) in items" :key="index">
-            <span v-if="item.type === 'check'" class="check">&#10004;</span>
-            <span v-else class="cross">&#10008;</span>
-            {{ item.text }}
-          </p>
+      <div class="card2fa__info">
+        <p v-for="(item, index) in items" :key="index" class="card2fa__item">
+          <span v-if="item.type === 'check'" class="card2fa__icon card2fa__icon--check">&#10004;</span>
+          <span v-else class="card2fa__icon card2fa__icon--cross">&#10008;</span>
+          <span class="card2fa__text">{{ item.text }}</span>
+        </p>
       </div>
-      <footer>
-        <Button :action="() => redirectTo(`/2fa/${type2fa}_verification`)" text="Configurar" :type2fa="type2fa"/>
+      <footer class="card2fa__footer">
+        <Button
+            :action="() => redirectTo(`/2fa/${type2fa}_verification`)"
+            text="Configurar"
+            class="card2fa__button"
+        />
       </footer>
     </section>
   </article>
@@ -38,6 +42,6 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped lang="sass">
+@use "@/SASS/components/card2fa"
 </style>

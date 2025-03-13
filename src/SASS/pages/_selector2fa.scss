@@ -1,0 +1,53 @@
+@use "@/SASS/abstracts/variables";
+
+.twofa-page {
+  $block: &;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  text-align: center;
+  min-height: 100vh; // Ocupa toda la altura visible
+
+  h1 {
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h1);
+    color: var(--color-primario-800);
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-parrafo);
+    color: var(--color-grises-600);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+  }
+
+  section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+
+    h1 {
+      font-size: var(--mobile-h1);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: var(--mobile-parrafo);
+      margin-bottom: 2rem;
+    }
+
+    section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 0;
+    }
+  }
+}

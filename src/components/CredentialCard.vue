@@ -2,7 +2,7 @@
     <article class="card" @click="redirectTo(`vault/credential/${id}`)" style="cursor: pointer;">
       <section class="card-content">
         <header>
-          <img :src="web_image" />
+          <img :src="web_image"  alt="logo de la página"/>
           <h3>{{ title }}</h3>
         </header>
         <main class="info">

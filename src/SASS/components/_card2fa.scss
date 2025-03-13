@@ -1,0 +1,112 @@
+@use "@/SASS/abstracts/variables";
+
+.card2fa {
+  $block: &;
+  background: var(--color-primario-700);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.08);
+  padding: 1.75rem;
+  border: 0.125rem solid var(--color-secundario-300);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  color: var(--color-secundario-700);
+
+  &:hover {
+    transform: translateY(-0.1875rem);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.12);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  &__header {
+    padding-bottom: 0.75rem;
+    border-bottom: 0.125rem solid var(--color-secundario-200);
+  }
+
+  &__title {
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h3);
+    color: var(--color-secundario-800);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-parrafo);
+    color: var(--color-secundario-800);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0.25rem 0;
+  }
+
+  &__icon {
+    font-weight: 700;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+
+    &--check {
+      color: var(--color-secundario-700);
+    }
+
+    &--cross {
+      color: var(--color-secundario-600);
+    }
+  }
+
+  &__footer {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 0.125rem solid var(--color-secundario-200);
+  }
+
+  &__button {
+    background-color: var(--color-secundario-700);
+    color: var(--color-primario-800);
+    width: 100%;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+  }
+
+  @media (max-width: 48rem) {
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+
+    &__title {
+      font-size: var(--mobile-h3);
+    }
+
+    &__item {
+      font-size: var(--mobile-parrafo);
+      gap: 0.75rem;
+    }
+
+    &__icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 0.9em;
+    }
+
+    &__button {
+      padding: 0.75rem 1.5rem;
+    }
+  }
+}
