@@ -118,13 +118,10 @@ body {
     flex: 0 0 45%;
     max-width: 500px;
     height: auto;
-    border-radius: 8px;
     object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Estilos para la lista decorada
 .benefits-list {
   list-style: none;
   padding-left: 0;
@@ -159,6 +156,15 @@ body {
   font-weight: 600;
 }
 @media (max-width: 768px) {
+  h1{
+    font-size: var(--mobile-h1);
+  }
+  h2{
+    font-size: var(--mobile-h2);
+  }
+  h3{
+    font-size: var(--mobile-h3);
+  }
   .middle__section {
     flex-direction: column;
     gap: 0.5rem; // Menor espacio al apilar

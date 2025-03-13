@@ -69,7 +69,7 @@ export default {
           }); // Request setup error
           console.error("Login failed - Request setup error:", error.message);
         }
-        console.error("Full error object:", error); // Log full error for debugging
+        console.error("Full error object:", error);
       }
     },
   },
@@ -77,16 +77,39 @@ export default {
 </script>
 
 <template>
-  <Form @submit="onSubmit" :validation-schema="schema">
-    <Field name="email" />
-    <ErrorMessage name="email" />
+  <Form @submit="onSubmit" :validation-schema="schema" class="form">
+    <div class="form__group">
+      <label class="form__label" for="email">Correo electrónico</label>
+      <Field
+          name="email"
+          type="email"
+          class="form__input"
+          placeholder="ejemplo@dominio.com"
+      />
+      <ErrorMessage name="email" class="form__error" />
+    </div>
 
-    <Field name="password" type="password" />
-    <ErrorMessage name="password" />
+    <div class="form__group">
+      <label class="form__label" for="password">Contraseña</label>
+      <Field
+          name="password"
+          type="password"
+          class="form__input"
+          placeholder="••••••••"
+      />
+      <ErrorMessage name="password" class="form__error" />
+    </div>
 
-    <Button type="submit" text="Acceder" />
+    <div class="form__actions">
+      <Button
+          type="submit"
+          text="Acceder"
+          class="button--primary"
+      />
+    </div>
   </Form>
 </template>
 
-<style scoped>
+<style scoped lang="sass">
+ @use "@/SASS/components/form"
 </style>

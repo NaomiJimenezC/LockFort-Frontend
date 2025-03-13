@@ -39,7 +39,6 @@ export default {
         </article>
     </section>
 
-    <!-- Sección Beneficios -->
   <section class="last__section">
     <article class="last__section__text-wrapper">
       <h3>¿Por qué usarnos?</h3>
