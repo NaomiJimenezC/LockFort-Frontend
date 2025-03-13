@@ -3,11 +3,15 @@
 .two-fa {
   max-width: 400px;
   margin: 2rem auto;
+  background: var(--color-secundario-800);
+
+  p{
+    color: var(--color-primario-800);
+  }
 
   &__section {
     text-align: center;
     padding: 1.5rem;
-    background: var(--color-secundario-100);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(28, 28, 28, 0.1);
   }
