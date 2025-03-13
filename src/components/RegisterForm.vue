@@ -57,88 +57,98 @@ export default {
 </script>
 
 <template>
-  <Form @submit="onSubmit" :validation-schema="schema">
+  <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      class="form"
+  >
     <!-- Mensaje de error general -->
-    <ErrorMessage name="general" class="error-message" />
+    <ErrorMessage name="general" class="form__error" />
 
-    <div>
-      <label for="username">Username</label>
+    <div class="form__group">
+      <label for="username" class="form__label">Username</label>
       <Field
-        id="username"
-        name="username"
-        label="Username"
-        type="text"
-        placeholder="Username"
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Username"
+          class="form__input"
       />
-      <ErrorMessage name="username" class="error-message" />
+      <ErrorMessage name="username" class="form__error" />
     </div>
 
-    <div>
-      <label for="email">Email</label>
+    <div class="form__group">
+      <label for="email" class="form__label">Email</label>
       <Field
-        id="email"
-        name="email"
-        label="Email"
-        type="email"
-        placeholder="Email"
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Email"
+          class="form__input"
       />
-      <ErrorMessage name="email" class="error-message" />
+      <ErrorMessage name="email" class="form__error" />
     </div>
 
-    <div>
-      <label for="birthday">Fecha Nacimiento</label>
+    <div class="form__group">
+      <label for="birthday" class="form__label">Fecha Nacimiento</label>
       <Field
-        id="birthday"
-        name="birthday"
-        label="Fecha Nacimiento"
-        type="date"
-        placeholder="Fecha Nacimiento"
+          id="birthday"
+          name="birthday"
+          type="date"
+          class="form__input"
       />
-      <ErrorMessage name="birthday" class="error-message" />
+      <ErrorMessage name="birthday" class="form__error" />
     </div>
 
-    <div>
-      <label for="password">Contraseña</label>
+    <div class="form__group">
+      <label for="password" class="form__label">Contraseña</label>
       <Field
-        id="password"
-        name="password"
-        label="Contraseña"
-        type="password"
-        placeholder="Contraseña"
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Contraseña"
+          class="form__input"
       />
-      <ErrorMessage name="password" class="error-message" />
+      <ErrorMessage name="password" class="form__error" />
     </div>
 
-    <div>
-      <label for="password_confirmation">Confirmar contraseña</label>
+    <div class="form__group">
+      <label for="password_confirmation" class="form__label">Confirmar contraseña</label>
       <Field
-        id="password_confirmation"
-        name="password_confirmation"
-        label="Confirmar contraseña"
-        type="password"
-        placeholder="Confirmar contraseña"
+          id="password_confirmation"
+          name="password_confirmation"
+          type="password"
+          placeholder="Confirmar contraseña"
+          class="form__input"
       />
-      <ErrorMessage name="password_confirmation" class="error-message" />
+      <ErrorMessage name="password_confirmation" class="form__error" />
     </div>
 
-    <div>
+    <div class="form__group form__group--inline">
       <Field
-        type="checkbox"
-        name="terms"
-        id="terms"
+          type="checkbox"
+          name="terms"
+          id="terms"
+          class="form__checkbox"
       />
-      <label for="terms" class="inline-label">Acepto los términos y condiciones</label>
-      <ErrorMessage name="terms" class="error-message" />
+      <label for="terms" class="form__label form__label--inline">
+        Acepto los términos y condiciones
+      </label>
+      <ErrorMessage name="terms" class="form__error" />
     </div>
 
-    <Button type="submit" text="Registrarte" />
+    <div class="form__actions">
+      <Button
+          type="submit"
+          text="Registrarte"
+          class="form__button"
+      />
+    </div>
   </Form>
 </template>
 
-<style scoped>
-.error-message {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
-}
+
+<style scoped lang="sass">
+@use "@/SASS/components/form"
+
 </style>

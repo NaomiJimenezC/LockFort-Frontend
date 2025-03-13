@@ -77,7 +77,13 @@ export default {
 </script>
 
 <template>
-  <Form @submit="onSubmit" :validation-schema="schema" class="form">
+  <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      class="form"
+  >
+    <ErrorMessage name="general" class="form__error" />
+
     <div class="form__group">
       <label class="form__label" for="email">Correo electrónico</label>
       <Field
@@ -104,11 +110,12 @@ export default {
       <Button
           type="submit"
           text="Acceder"
-          class="button--primary"
+          class="form__button button--primary"
       />
     </div>
   </Form>
 </template>
+
 
 <style scoped lang="sass">
  @use "@/SASS/components/form"
