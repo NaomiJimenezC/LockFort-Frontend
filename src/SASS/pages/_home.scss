@@ -1,0 +1,192 @@
+@use "@/SASS/abstracts/variables";
+body {
+  background-color: var(--color-secundario-400);
+  display: flex; /* Añadimos flexbox al body */
+  flex-direction: column; /* Para que los elementos se apilen verticalmente */
+  justify-content: center; /* Centra horizontalmente en el body */
+  align-items: center; /* Centra verticalmente en el body (opcional) */
+  min-height: 100vh; /* Asegura que el body ocupe al menos el 100% del viewport alto */
+
+  h1{
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h1);
+    text-align: center; /* Asegura que el texto dentro de h1 también esté centrado */
+    color: var(--color-primario-800);
+  }
+
+  h2{
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h2);
+    text-align: center;
+    color: var(--color-primario-800);
+  }
+  h3{
+    font-family: var(--tipografia-titulos), sans-serif;
+    font-size: var(--desktop-h2);
+    color: var(--color-primario-800);
+  }
+
+  p{
+    font-size: var(--desktop-parrafo);
+    color: var(--color-primario-800);
+  }
+
+  img{
+    height: 20rem;
+  }
+}
+
+.main__section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 90%; // Porcentaje relativo al contenedor padre
+  max-width: 50rem; // Limite máximo en unidades relativas
+  margin: 0 auto;
+  padding: 2vh 0; // Vertical relativo al viewport
+
+  .button {
+    width: fit-content; // Ancho basado en contenido
+    padding: 0.8em 2.5em; // Relativo al font-size del botón
+    font-size: clamp(1rem, 2vw, 1.2rem); // Tamaño adaptable
+    margin-top: 1.5vh;
+  }
+}
+
+.middle__section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; // Cambiamos a "center" para juntarlos
+  gap: 10rem; // Añadimos espacio controlado entre elementos
+  color: var(--color-secundario-800);
+  background-color: var(--color-primario-700);
+  padding: 1.5rem; // Añadimos padding interno para evitar pegado a bordes
+
+  h2{
+    text-align: left;
+    color: var(--color-secundario-800);
+  }
+
+  p{
+    color: var(--color-secundario-800);
+  }
+
+  &__text-wrapper {
+    max-width: 28rem; // Aumentamos el ancho del texto
+    margin-left: 1rem; // Acercamos al lado de la imagen
+  }
+
+  &__image {
+    flex: 0 0 45%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+}
+
+.last__section {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__text-wrapper {
+    flex: 1;
+    max-width: 600px;
+    padding-right: 4rem;
+
+    color: var(--color-primario-600);
+
+    h3 {
+      text-align: left;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: var(--color-primario-800);
+    }
+  }
+
+  &__image {
+    flex: 0 0 45%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Estilos para la lista decorada
+.benefits-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+
+  &__item {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: var(--color-primario-700);
+
+    &::before {
+      content: "▹";
+      color: var(--color-primario-700);
+      font-size: 1.4rem;
+      position: absolute;
+      left: 0;
+      top: 0.1rem;
+    }
+
+    &:hover::before {
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+.highlight {
+  color: var(--color-primario-700);
+  font-weight: 600;
+}
+@media (max-width: 768px) {
+  .middle__section {
+    flex-direction: column;
+    gap: 0.5rem; // Menor espacio al apilar
+
+    &__image {
+      max-width: 80%; // Imagen un poco más grande
+      margin: 0 0 0.5rem 0; // Margen solo abajo
+    }
+
+    &__text-wrapper {
+      max-width: 90%;
+      margin: 0; // Sin margen lateral
+    }
+  };
+  .last__section{
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+
+    &__text-wrapper {
+      max-width: 100%;
+      padding-right: 0;
+    }
+
+    &__image {
+      flex: none;
+      max-width: 100%;
+      order: 2; //
+    }
+  }
+}

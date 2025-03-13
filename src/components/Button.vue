@@ -18,8 +18,8 @@ export default {
 </script>
 
 <template>
-  <button type="button" @click="action">{{text}}</button>
+  <button type="button" @click="action" text="{{text}}">{{text}}</button>
 </template>
-<style>
-
+<style scoped lang="sass">
+@use "@/SASS/components/button"
 </style>
