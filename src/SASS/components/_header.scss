@@ -15,7 +15,7 @@
   }
 
   &__logo {
-    width: var(--desktop-h1); // Example logo size, adjust based on your asset
+    width: 6rem; // Example logo size, adjust based on your asset
     height: auto;
     margin-right: 1rem;
   }
@@ -27,12 +27,7 @@
     margin: 0;
   }
 
-  &__nav {
-    // Styles for the nav container if needed
-  }
-
   &__list {
-    list-style: none; // Redundant, already reset in reset.scss but good for component isolation if needed
     padding: 0;
     margin: 0;
     display: flex;
@@ -40,14 +35,17 @@
   }
 
   &__item {
-    margin-left: 1.5rem; // Spacing between nav items, adjust as needed
+    margin-left: 3rem; // Spacing between nav items, adjust as needed
     color: var(--color-secundario-800);
   }
 
   &__icon {
-    font-size: 1.5rem; // Example icon size, adjust as needed
+    font-size: 2rem;
     cursor: pointer;
     transition: color 0.2s ease-in-out;
+  }
+  &__icon:not(:last-child) {
+    margin-right: 1rem; // Ajusta este valor según el espacio deseado
   }
 }
 

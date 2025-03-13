@@ -1,23 +1,23 @@
 <template>
   <header class="header">
-    <section>
-      <img class="" src="@/assets/lockfort.svg" alt="logo" />
-      <h1>LockFort</h1>
+    <section class="header__section">
+      <img class="header__logo" src="@/assets/lockfort.svg" alt="logo" />
+      <h1 class="header__title">LockFort</h1>
     </section>
 
-    <nav>
-      <ul v-if="!authStore.isLoggedIn">
-        <li>
-          <font-awesome-icon icon="fa-solid fa-lightbulb" />
-          <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" @click="router().push({name: 'Login'})" />
+    <nav class="header__nav">
+      <ul class="header__list" v-if="!authStore.isLoggedIn">
+        <li class="header__item">
+          <font-awesome-icon class="header__icon" icon="fa-solid fa-lightbulb" />
+          <font-awesome-icon class="header__icon" icon="fa-solid fa-arrow-right-to-bracket" @click="router().push({ name: 'Login' })" />
         </li>
       </ul>
 
-      <ul v-else>
-        <li>
-          <font-awesome-icon icon="fa-solid fa-lightbulb" />
-          <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" @click="logout" />
-          <font-awesome-icon icon="fa-solid fa-user" @click="router().push({name: 'User'})" />
+      <ul class="header__list" v-else>
+        <li class="header__item">
+          <font-awesome-icon class="header__icon" icon="fa-solid fa-lightbulb" />
+          <font-awesome-icon class="header__icon" icon="fa-solid fa-arrow-right-from-bracket" @click="logout" />
+          <font-awesome-icon class="header__icon" icon="fa-solid fa-user" @click="router().push({ name: 'User' })" />
         </li>
       </ul>
     </nav>
