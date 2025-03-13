@@ -67,42 +67,65 @@ export default {
 };
 </script>
 
+Copy
+
 <template>
-  <section>
-    <h1>Configura tu Authenticator App</h1>
-    <p>Escanea el código QR con tu aplicación de autenticación (Google Authenticator, Authy, etc.) para generar códigos de verificación.</p>
-  </section>
+  <div class="two-fa">
+    <section class="two-fa__section">
+      <h1 class="two-fa__title">Configura tu Authenticator App</h1>
+      <p class="two-fa__instructions">Escanea el código QR con tu aplicación de autenticación (Google Authenticator, Authy, etc.) para generar códigos de verificación.</p>
+    </section>
 
-  <section v-if="loadingQrCode">
-    <p>Cargando código QR...</p>
-  </section>
+    <section v-if="loadingQrCode" class="two-fa__loading two-fa__loading--visible">
+      <p>Cargando código QR...</p>
+    </section>
 
-  <section v-else-if="qrCodeError">
-    <p class="error-message">{{ qrCodeError }}</p>
-    <Button text="Reintentar Cargar QR" @click="setUpQr" />
-  </section>
-
-  <section v-else-if="qrCodeDataUri">
-    <img :src="qrCodeDataUri" alt="Código QR para Authenticator App" />
-    <p>Escanea este código QR con tu Authenticator App.</p>
-
-    <Form @submit="onSubmit" :validation-schema="schema">
-      <label for="code">Código de Verificación</label>
-      <Field
-        type="text"
-        id="code"
-        name="code"
-        placeholder="Introduce el código de 6 dígitos"
+    <section v-else-if="qrCodeError" class="two-fa__error two-fa__error--active">
+      <p class="two-fa__error-text">{{ qrCodeError }}</p>
+      <Button
+          text="Reintentar Cargar QR"
+          @click="setUpQr"
+          class="two-fa__retry-button"
       />
-      <ErrorMessage name="code" class="error-message" />
-      <Button type="submit" text="Verificar Código" />
-    </Form>
-  </section>
+    </section>
+
+    <section v-else-if="qrCodeDataUri" class="two-fa__section">
+      <div class="two-fa__qr-container">
+        <img
+            :src="qrCodeDataUri"
+            alt="Código QR para Authenticator App"
+            class="two-fa__qr-image"
+        />
+      </div>
+
+      <p class="two-fa__instructions">Escanea este código QR con tu Authenticator App.</p>
+
+      <Form
+          @submit="onSubmit"
+          :validation-schema="schema"
+          class="two-fa__form"
+      >
+        <div class="two-fa__form-group">
+          <label for="code" class="two-fa__label">Código de Verificación</label>
+          <Field
+              type="text"
+              id="code"
+              name="code"
+              placeholder="Introduce el código de 6 dígitos"
+              class="two-fa__input"
+          />
+          <ErrorMessage name="code" class="two-fa__error-text" />
+        </div>
+        <Button
+            type="submit"
+            text="Verificar Código"
+            class="two-fa__submit-button"
+        />
+      </Form>
+    </section>
+  </div>
 </template>
 
-<style scoped>
-.error-message {
-  color: red;
-  margin-top: 5px;
-}
+<style scoped lang="sass">
+@use "@/SASS/pages/authAppVerificator"
 </style>
