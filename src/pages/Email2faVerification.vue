@@ -81,30 +81,50 @@ export default {
 </script>
 
 <template>
-  <section>
-    <h1>¡Último paso!</h1>
-    <p>Para poder acceder a tu cuenta debes ingresar el código que le hemos enviado al correo. Recuerda revisar la bandeja de spam</p>
-  </section>
-  <section>
-    <Form @submit="onSubmit" :validation-schema="schema">
-      <label for="code">Código verificación</label>
-      <Field
-        type="text"
-        id="code"
-        name="code"
-        placeholder="Introduce el código"
-      />
-      <ErrorMessage name="code" class="error-message" />
-      <Button type="submit" text="Enviar" />
-      <Button
-        :text="requestCodeButtonTimer > 0 ? `Solicitar código (${requestCodeButtonTimer}s)` : 'Solicitar código'"
-        :disabled="isRequestCodeButtonDisabled"
-        @click="sendEmail"
-      />
-    </Form>
-  </section>
+  <div class="email2fa">
+    <main class="verificator">
+      <section class="verificator__header">
+        <h1 class="verificator__title">¡Último paso!</h1>
+        <p class="verificator__text">
+          Para poder acceder a tu cuenta debes ingresar el código que le hemos enviado al correo.
+          <span class="verificator__highlight">Recuerda revisar la bandeja de spam</span>
+        </p>
+      </section>
+
+      <section class="verificator__form">
+        <Form @submit="onSubmit" :validation-schema="schema" class="verificator__form-container">
+          <div class="verificator__input-group">
+            <label class="verificator__label" for="code">Código de verificación</label>
+            <Field
+                type="text"
+                id="code"
+                name="code"
+                placeholder="Ej: 123456"
+                class="verificator__input"
+            />
+            <ErrorMessage name="code" class="verificator__error" />
+          </div>
+
+          <div class="verificator__button-group">
+            <Button
+                type="submit"
+                class="verificator__button verificator__button--submit"
+                text="Enviar"
+            />
+            <Button
+                :text="requestCodeButtonTimer > 0 ? `Solicitar código (${requestCodeButtonTimer}s)` : 'Solicitar código'"
+                :disabled="isRequestCodeButtonDisabled"
+                class="verificator__button verificator__button--request"
+                @click="sendEmail"
+            />
+          </div>
+        </Form>
+      </section>
+    </main>
+  </div>
+
 </template>
 
-<style scoped>
-
+<style scoped lang="sass">
+@use '@/SASS/pages/emailVerificator'
 </style>
