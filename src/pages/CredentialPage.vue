@@ -122,7 +122,9 @@ export default {
       try {
         const response = await axios.get(
             `${this.urlBackend}/credentials/${this.id}`,
-            { withCredentials: true }
+            {headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              }}
         );
 
         if (response.data) {

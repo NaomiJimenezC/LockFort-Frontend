@@ -163,7 +163,9 @@ export default {
       try {
         const response = await axios.get(
             `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
-            { withCredentials: true }
+            {headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }}
         );
         if (response.data) {
           this.credential = response.data;
@@ -189,7 +191,9 @@ export default {
       axios.put(
           `${import.meta.env.VITE_BACKEND_URL}/credentials/${this.id}`,
           formData,
-          { withCredentials: true, withXSRFToken: true }
+          {headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }}
       ).then(() => {
         router.push({ name: 'Vault' });
       }).catch(error => {

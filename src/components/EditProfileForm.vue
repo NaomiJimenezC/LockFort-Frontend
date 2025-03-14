@@ -185,9 +185,11 @@
       },
       updateUser(formData) {
           axios.put(
-              `${import.meta.env.VITE_BACKEND_URL}/api/updateUser`, // Backend endpoint is /api/updateUser (assumed)
+              `${import.meta.env.VITE_BACKEND_URL}/user/update`, // Backend endpoint is /api/updateUser (assumed)
               formData,
-              { withCredentials: true, withXSRFToken: true }
+              {headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }}
           ).then(() => {
             router.push({ name: 'UserProfile' }); // Redirige al perfil de usuario tras la edición
           }).catch(error => {

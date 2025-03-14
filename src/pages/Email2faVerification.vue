@@ -34,6 +34,7 @@ export default {
         axios.post(`${urlBackend}/auth/2fa/verify`, values)
           .then(response => {
             if (response.status === 200) {
+              localStorage.setItem("token", response.data.access_token);
               this.authStore.login(response.data.user);
               router.push("/vault");
             }

@@ -118,7 +118,9 @@ export default {
             .then(webpBase64 => {
               formData.web_photo = webpBase64;
               console.log('Datos a enviar:', formData);
-              axios.post(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
+              axios.post(`${urlBackend}/credentials`,formData,{headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }})
               router.push({ name: 'Vault' })
             })
             .catch(error => {
@@ -126,7 +128,9 @@ export default {
             });
       } else {
           console.log('Datos a enviar:', formData);
-        axios.post(`${urlBackend}/credentials`,formData,{ withCredentials: true, withXSRFToken: true })
+        axios.post(`${urlBackend}/credentials`,formData,{headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }})
         router.push({ name: 'Vault' })
       }
     },

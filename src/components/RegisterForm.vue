@@ -38,8 +38,7 @@ export default {
   methods: {
     async onSubmit(values, { setErrors }) {
       try {
-        await axios.get(`${this.csrf}/sanctum/csrf-cookie`, { withCredentials: true });
-        await axios.post(`${this.urlBackend}/auth/register`, values, { withCredentials: true, withXSRFToken: true });
+        await axios.post(`${this.urlBackend}/auth/register`, values);
         await this.$router.push("/login");
       } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {

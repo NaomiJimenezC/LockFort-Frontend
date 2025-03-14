@@ -7,7 +7,6 @@ import axios from "axios";
 import router from "@/router/index.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
-const csrf = urlBackend.replace(/\/api$/, "");
 
 export default {
   name: "LoginForm",
@@ -32,18 +31,10 @@ export default {
   methods: {
     async onSubmit(values, { setErrors }) {
       try {
-        const crsf_token = await axios.get(`${csrf}/sanctum/csrf-cookie`, {
-          withCredentials: true,
-          withXSRFToken: true,
-        });
-
-        if (crsf_token.status === 204 || crsf_token.status === 200) {
-          await axios.post(`${urlBackend}/auth/login`, values, {
-            withCredentials: true,
-            withXSRFToken: true,
-          });
+          await axios.post(`${urlBackend}/auth/login`, values, {headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }});
           await router.push("/2fa"); // Redirect on success
-        }
       } catch (error) {
         if (error.response) {
           const responseData = error.response.data;

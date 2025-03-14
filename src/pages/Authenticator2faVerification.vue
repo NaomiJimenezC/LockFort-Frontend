@@ -28,7 +28,9 @@ export default {
     async onSubmit(values, actions) {
       if (!actions.errors) {
         try {
-          const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values, { withCredentials: true, withXSRFToken: true });
+          const response = await axios.post(`${urlBackend}/auth/2fa/verify`, values, {headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }})
           if (response.status === 200) {
             this.authStore.login(response.data.user);
             await router.push("/vault");
@@ -51,7 +53,9 @@ export default {
       this.loadingQrCode = true;
       this.qrCodeError = null;
       try {
-        const response = await axios.post(`${urlBackend}/auth/2fa/setup`, { 'two_factor_type': 'app' }, { withCredentials: true, withXSRFToken: true });
+        const response = await axios.post(`${urlBackend}/auth/2fa/setup`, { 'two_factor_type': 'app' }, {headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }});
         this.qrCodeDataUri = `data:image/png;base64,${response.data.qr_code_url}`;
       } catch (error) {
 

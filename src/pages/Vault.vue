@@ -102,14 +102,18 @@ export default {
     };
   },
   mounted() {
-    this.obtenerDatos('http://localhost/api/credentials?page=1');
+    this.obtenerDatos(`${import.meta.env.VITE_BACKEND_URL}/credentials`);
   },
   methods: {
     router() {
       return router;
     },
     obtenerDatos(url) {
-      axios.get(url, {withCredentials: true, withXSRFToken: true})
+      axios.get(url,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
           .then(response => {
             this.resultados = response.data.data;
             this.resultadosOrdenados = response.data.data;
