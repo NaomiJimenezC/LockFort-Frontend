@@ -8,9 +8,15 @@ export default {
 </script>
 
 <template>
-<NewCredentialForm/>
+  <h1>Nueva Credencial</h1>
+  <NewCredentialForm/>
 </template>
 
-<style scoped>
+<style scoped lang="sass">
+@use '@/sass/abstracts/variables'
 
+h1
+  font-size: var(--desktop-h1)
+  text-align: center
+  color: var(--color-primario-800)
 </style>

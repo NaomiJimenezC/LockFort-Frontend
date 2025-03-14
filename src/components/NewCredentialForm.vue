@@ -1,39 +1,44 @@
 <template>
   <div class="new-credential">
-    <h2>Nueva Credencial</h2>
-    <Form :validation-schema="schema" @submit="onSubmit">
-      <div class="form-group">
-        <label for="title">Título</label>
-        <Field name="title" type="text" id="title" placeholder="Ingresa el título" />
-        <ErrorMessage name="title" class="error-message" />
+    <Form :validation-schema="schema" @submit="onSubmit" class="form">
+      <div class="form__group">
+        <label for="title" class="form__label">Título</label>
+        <Field name="title" type="text" id="title" placeholder="Ingresa el título" class="form__input" />
+        <ErrorMessage name="title" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_username">Usuario</label>
-        <Field name="encrypted_username" type="text" id="encrypted_username" placeholder="Ingresa el usuario" />
-        <ErrorMessage name="encrypted_username" class="error-message" />
+      <div class="form__group">
+        <label for="encrypted_username" class="form__label">Usuario</label>
+        <Field name="encrypted_username" type="text" id="encrypted_username" placeholder="Ingresa el usuario" class="form__input" />
+        <ErrorMessage name="encrypted_username" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_password">Contraseña</label>
-        <Field name="encrypted_password" type="password" id="encrypted_password" placeholder="Ingresa la contraseña" />
-        <ErrorMessage name="encrypted_password" class="error-message" />
+      <div class="form__group">
+        <label for="encrypted_password" class="form__label">Contraseña</label>
+        <Field name="encrypted_password" type="password" id="encrypted_password" placeholder="Ingresa la contraseña" class="form__input" />
+        <ErrorMessage name="encrypted_password" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_url">URL</label>
-        <Field name="encrypted_url" type="text" id="encrypted_url" placeholder="Ingresa la URL" />
-        <ErrorMessage name="encrypted_url" class="error-message" />
+      <div class="form__group">
+        <label for="encrypted_url" class="form__label">URL</label>
+        <Field name="encrypted_url" type="text" id="encrypted_url" placeholder="Ingresa la URL" class="form__input" />
+        <ErrorMessage name="encrypted_url" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_notes">Notas (opcional)</label>
-        <Field name="encrypted_notes" as="textarea" id="encrypted_notes" placeholder="Ingresa notas adicionales (opcional)" />
-        <ErrorMessage name="encrypted_notes" class="error-message" />
+      <div class="form__group">
+        <label for="encrypted_notes" class="form__label">Notas (opcional)</label>
+        <Field
+            name="encrypted_notes"
+            as="textarea"
+            id="encrypted_notes"
+            placeholder="Ingresa notas adicionales (opcional)"
+            class="form__input"
+        />
+        <ErrorMessage name="encrypted_notes" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="web_photo">
+      <div class="form__group">
+        <label for="web_photo" class="form__label">
           Imagen (opcional, máximo 2MB, formatos permitidos: jpg, png)
         </label>
         <input
@@ -42,21 +47,25 @@
             name="web_photo"
             accept="image/jpeg,image/png"
             @change="handleFileChange"
+            class="form__input"
         />
-        <ErrorMessage name="web_photo" class="error-message" />
+        <ErrorMessage name="web_photo" class="form__error" />
       </div>
 
-      <button type="submit">Crear Credencial</button>
+      <div class="form__actions">
+        <Button type="submit" class="form__button" text="Crear Credencial">Crear Credencial</Button>
+      </div>
     </Form>
   </div>
 </template>
+
 
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import axios from "axios";
 import router from "@/router/index.js";
-import { convertToWebp } from '@/helpers/imagesHelper.js'; // Importa convertToWebp
+import { convertToWebp } from '@/helpers/imagesHelper.js';
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
@@ -125,49 +134,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.new-credential {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"],
-textarea,
-input[type="file"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #2D3748;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1a202c;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.9em;
-  margin-top: 5px;
-}
+<style scoped lang="sass">
+@use '@/sass/components/form'
 </style>

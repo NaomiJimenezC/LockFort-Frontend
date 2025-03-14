@@ -2,12 +2,13 @@
   <article class="credentialCard" @click="redirectTo(`vault/credential/${id}`)">
     <section class="credentialCard__content">
       <header class="credentialCard__content__header">
-        <img class="credentialCard__content__header__img" :src="web_image" />
+
+        <img class="credentialCard__content__header__img" :src="web_image || defaultImage" />
         <h3 class="credentialCard__content__header__title">{{ title }}</h3>
       </header>
       <main class="credentialCard__content__info">
         <p>{{ username }}</p>
-        <p>{{ dateCreation }}</p>
+        <p>{{ formatDate(dateCreation) }}</p>
       </main>
       <footer></footer>
     </section>
@@ -16,9 +17,15 @@
 
   <script>
   import router from "@/router/index.js";
+  import defaultImage from '@/assets/icons8-default-image-48.png'
 
   export default {
-    components: {},
+    data(){
+      return{
+        defaultImage
+      }
+    }
+    ,
     props: {
       id: Number,
       title: String,
@@ -30,7 +37,16 @@
       redirectTo(route) {
         router.push(route);
       },
-    },
+      formatDate(dateString) {
+      const date = new Date(dateString);
+      if (isNaN(date)) return 'Fecha inválida';
+      
+      return new Intl.DateTimeFormat('es-ES', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      }).format(date);
+    },}
   };
   </script>
 
