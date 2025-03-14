@@ -1,40 +1,43 @@
 <template>
-    <article class="user-profile">
-      <header class="profile-header">
-        <h1 class="profile-title">Perfil de Usuario</h1>
-      </header>
+  <article class="user-profile">
+    <header class="user-profile__header">
+      <h1 class="user-profile__title">Perfil de Usuario</h1>
+    </header>
 
-      <main v-if="currentUser" class="profile-content">
-        <dl class="profile-info">
+    <main v-if="currentUser" class="user-profile__content">
+      <dl class="user-profile__info">
+        <div class="user-profile__item">
+          <dt class="user-profile__term">Nombre de usuario:</dt>
+          <dd class="user-profile__description">{{ currentUser.username }}</dd>
+        </div>
+        <div class="user-profile__item">
+          <dt class="user-profile__term">Email:</dt>
+          <dd class="user-profile__description">{{ currentUser.email }}</dd>
+        </div>
+        <div class="user-profile__item">
+          <dt class="user-profile__term">Fecha de nacimiento:</dt>
+          <dd class="user-profile__description">{{ formattedBirthday }}</dd>
+        </div>
+        <div class="user-profile__item">
+          <dt class="user-profile__term">2FA Tipo:</dt>
+          <dd class="user-profile__description">{{ formattedTwoFactorType }}</dd>
+        </div>
+      </dl>
 
-          <div class="profile-item">
-            <dt>Nombre de usuario:</dt>
-            <dd>{{ currentUser.username }}</dd>
-          </div>
-          <div class="profile-item">
-            <dt>Email:</dt>
-            <dd>{{ currentUser.email }}</dd>
-          </div>
-          <div class="profile-item">
-            <dt>Fecha de nacimiento:</dt>
-            <dd>{{ formattedBirthday }}</dd>
-          </div>
-          <div class="profile-item">
-            <dt>2FA Tipo:</dt>
-            <dd>{{ formattedTwoFactorType }}</dd>
-          </div>
-        </dl>
-        <Button :action="editProfile" text="Enviar"/>
-      </main>
+      <Button
+          :action="editProfile"
+          text="Editar Perfil"
+          class="user-profile__button"
+      />
+    </main>
 
-      <section v-else class="loading-container">
-        <p class="loading-text">Cargando perfil...</p>
-      </section>
-    </article>
-  </template>
+    <section v-else class="user-profile__loading">
+      <p class="user-profile__loading-text">Cargando perfil...</p>
+    </section>
+  </article>
+</template>
 
   <script>
-import router from '@/router/index';
 import { useAuthStore } from '@/storage/authStorage';
 import Button from '@/components/Button.vue';
 
@@ -79,58 +82,104 @@ import Button from '@/components/Button.vue';
   };
   </script>
 
-  <style scoped>
-  .user-profile {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+<style lang="sass" scoped>
+@use '@/SASS/abstracts/variables'
 
-  .profile-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-  }
+.user-profile
+  max-width: 800px
+  margin: 2rem auto
+  padding: 2rem
+  background: var(--color-secundario-800)
+  border-radius: 1rem
+  box-shadow: 0 4px 12px rgba(var(--color-grises-800), 0.1)
 
-  .profile-title {
-    color: #333;
-    font-size: 24px;
-  }
+  &__header
+    border-bottom: 2px solid var(--color-primario-200)
+    padding-bottom: 1.5rem
+    margin-bottom: 2rem
+    text-align: center
 
-  .profile-content {
-    padding: 20px;
-  }
+  &__title
+    font-family: var(--tipografia-titulos), sans-serif
+    font-size: var(--desktop-h2)
+    color: var(--color-primario-800)
+    margin: 0
 
-  .profile-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
+  &__content
+    display: grid
+    gap: 2rem
 
-  .profile-item dt {
-    font-weight: bold;
-    color: #6c757d;
-    margin-bottom: 5px;
-  }
+  &__info
+    display: grid
+    gap: 1.5rem
+    padding: 0
+    margin: 0
 
-  .profile-item dd {
-    margin: 0;
-    color: #333;
-  }
+  &__item
+    display: grid
+    grid-template-columns: 1fr 2fr
+    gap: 1rem
+    align-items: center
+    padding: 1rem
+    background: var(--color-primario-600)
+    border-radius: 0.5rem
+    box-shadow: 0 2px 6px rgba(var(--color-grises-300), 0.1)
 
-  .loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-  }
+  &__term
+    font-family: var(--tipografia-titulos)
+    font-size: var(--desktop-parrafo)
+    color: var(--color-secundario-600)
+    font-weight: 500
+    margin: 0
 
-  .loading-text {
-    color: #666;
-    font-style: italic;
-  }
-  </style>
+  &__description
+    font-family: var(--tipografia-titulos)
+    font-size: var(--desktop-h3)
+    color: var(--color-secundario-700)
+    margin: 0
+    word-break: break-word
+
+  &__button
+    justify-self: end
+    padding: 0.75rem 2rem
+    background: var(--color-primario-600)
+    color: white
+    border-radius: 0.25rem
+    transition: all 0.3s ease
+
+    &:hover
+      background: var(--color-primario-700)
+      transform: translateY(-1px)
+
+  &__loading
+    text-align: center
+    padding: 2rem
+
+  &__loading-text
+    font-family: var(--tipografia-titulos)
+    color: var(--color-grises-600)
+    font-size: var(--desktop-parrafo)
+
+  @media (max-width: 768px)
+    margin: 1rem
+    padding: 1.5rem
+    border-radius: 0.5rem
+
+    &__item
+      grid-template-columns: 1fr
+      gap: 0.5rem
+      padding: 0.75rem
+
+    &__term
+      font-size: var(--mobile-parrafo)
+
+    &__description
+      font-size: var(--mobile-parrafo)
+
+    &__title
+      font-size: var(--mobile-h1)
+
+    &__button
+      width: 100%
+      justify-self: center
+</style>

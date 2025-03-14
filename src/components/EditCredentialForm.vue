@@ -1,60 +1,98 @@
 <template>
-  <div class="new-credential">
-    <h2>Editar Credencial</h2>
+  <div class="form new-credential">
+    <h2 class="form__title">Editar Credencial</h2>
+
     <Form
         v-if="credential"
         :initial-values="initialValuesWithoutWebPhoto"
         :validation-schema="schema"
         @submit="onSubmit"
         :key="credential.id"
+        class="form__content"
     >
-      <div class="form-group">
-        <label for="title">Título</label>
-        <Field name="title" type="text" id="title" placeholder="Ingresa el título" />
-        <ErrorMessage name="title" class="error-message" />
+      <div class="form__group">
+        <label class="form__label" for="title">Título</label>
+        <Field
+            class="form__input"
+            name="title"
+            type="text"
+            id="title"
+            placeholder="Ingresa el título"
+        />
+        <ErrorMessage name="title" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_username">Usuario</label>
-        <Field name="encrypted_username" type="text" id="encrypted_username" placeholder="Ingresa el usuario" />
-        <ErrorMessage name="encrypted_username" class="error-message" />
+      <div class="form__group">
+        <label class="form__label" for="encrypted_username">Usuario</label>
+        <Field
+            class="form__input"
+            name="encrypted_username"
+            type="text"
+            id="encrypted_username"
+            placeholder="Ingresa el usuario"
+        />
+        <ErrorMessage name="encrypted_username" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_password">Contraseña</label>
-        <Field name="encrypted_password" type="password" id="encrypted_password" placeholder="Ingresa la contraseña" />
-        <ErrorMessage name="encrypted_password" class="error-message" />
+      <div class="form__group">
+        <label class="form__label" for="encrypted_password">Contraseña</label>
+        <Field
+            class="form__input"
+            name="encrypted_password"
+            type="password"
+            id="encrypted_password"
+            placeholder="Ingresa la contraseña"
+        />
+        <ErrorMessage name="encrypted_password" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_url">URL</label>
-        <Field name="encrypted_url" type="text" id="encrypted_url" placeholder="Ingresa la URL" />
-        <ErrorMessage name="encrypted_url" class="error-message" />
+      <div class="form__group">
+        <label class="form__label" for="encrypted_url">URL</label>
+        <Field
+            class="form__input"
+            name="encrypted_url"
+            type="text"
+            id="encrypted_url"
+            placeholder="Ingresa la URL"
+        />
+        <ErrorMessage name="encrypted_url" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="encrypted_notes">Notas (opcional)</label>
-        <Field name="encrypted_notes" as="textarea" id="encrypted_notes" placeholder="Ingresa notas adicionales (opcional)" />
-        <ErrorMessage name="encrypted_notes" class="error-message" />
+      <div class="form__group">
+        <label class="form__label" for="encrypted_notes">Notas (opcional)</label>
+        <Field
+            class="form__input"
+            name="encrypted_notes"
+            as="textarea"
+            id="encrypted_notes"
+            placeholder="Ingresa notas adicionales (opcional)"
+        />
+        <ErrorMessage name="encrypted_notes" class="form__error" />
       </div>
 
-      <div class="form-group">
-        <label for="web_photo">
+      <div class="form__group">
+        <label class="form__label" for="web_photo">
           Imagen (opcional, máximo 2MB, formatos permitidos: jpg, png)
         </label>
         <input
+            class="form__input"
             type="file"
             id="web_photo"
             name="web_photo"
             accept="image/jpeg,image/png"
             @change="handleFileChange"
         />
-        <ErrorMessage name="web_photo" class="error-message" />
+        <ErrorMessage name="web_photo" class="form__error" />
       </div>
 
-      <button type="submit">Editar Credencial</button>
+      <div class="form__actions">
+        <Button type="submit" class="form__button editor" text=" Editar Credencial">
+          Editar Credencial
+        </Button>
+      </div>
     </Form>
-    <div v-else class="loading-message">
+
+    <div v-else class="form__loading-message">
       ⏳ Cargando información de la credencial...
     </div>
   </div>
@@ -66,10 +104,12 @@ import * as yup from 'yup';
 import axios from 'axios';
 import router from '@/router/index.js';
 import {convertToWebp} from '@/helpers/imagesHelper.js';
+import Button from "@/components/Button.vue";
 
 export default {
   name: 'EditCredentialForm',
   components: {
+    Button,
     Form,
     Field,
     ErrorMessage
@@ -160,55 +200,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.new-credential {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="password"],
-textarea,
-input[type="file"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #2D3748;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1a202c;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.9em;
-  margin-top: 5px;
-}
-
-.loading-message {
-  text-align: center;
-  padding: 2rem;
-  color: #7f8c8d;
-}
+<style scoped lang="sass">
+@use '@/SASS/components/form'
 </style>
