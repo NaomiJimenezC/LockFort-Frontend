@@ -10,6 +10,11 @@
 </template>
 
 <script>
+/**
+ * @vue-component
+ * @name SearchBar
+ * @description This component provides a search bar that allows users to filter a list of data based on the title of each item. It emits a 'filtered-data' event with the array of filtered items whenever the input changes.
+ */
 export default {
   name: 'SearchBar',
   props: {

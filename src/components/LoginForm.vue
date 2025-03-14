@@ -8,6 +8,11 @@ import router from "@/router/index.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
+/**
+ * @vue-component
+ * @name LoginForm
+ * @description Component for handling user login.
+ */
 export default {
   name: "LoginForm",
   components: { ErrorMessage, Button, Field, Form },

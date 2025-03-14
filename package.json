@@ -17,6 +17,7 @@
     "axios": "^1.8.1",
     "feather-icons": "^4.29.2",
     "i": "^0.3.7",
+    "jsdoc": "^4.0.4",
     "npm": "^11.2.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",

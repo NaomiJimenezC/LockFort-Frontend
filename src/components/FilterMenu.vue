@@ -26,6 +26,11 @@
     </div>
   </template>
 
+/**
+* @vue-component
+* @name FilterMenu
+* @description This component provides a menu to filter results based on different sorting options. It emits a 'sort-results' event with the selected sorting type.
+*/
   <script>
   export default {
     name: 'FilterMenu',

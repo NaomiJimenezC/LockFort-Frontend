@@ -79,7 +79,11 @@ import SearchBar from '@/components/SearchBar.vue';
 import Button from '@/components/Button.vue';
 import CredentialCard from '@/components/CredentialCard.vue';
 import router from '@/router/index.js';
-
+/**
+ * @vue-component
+ * @name VaultView
+ * @description This component displays a list of user's credentials fetched from the backend. It includes functionalities for searching and filtering the credentials. Users can also navigate to create a new credential. The component handles pagination of the credential list.
+ */
 export default {
   name: 'VaultView',
   components: {
@@ -134,6 +138,12 @@ export default {
     updateResults(filtered) {
       this.resultadosOrdenados = filtered;
     },
+    /**
+     * @function handleSortResults
+     * @description Sorts the `resultadosOrdenados` array based on the selected sorting criteria.
+     * @param {string} sortBy - The sorting criteria ('ascendente', 'descendente', 'antiguo', 'reciente').
+     * @returns {void}
+     */
     handleSortResults(sortBy) {
       let sortedArray = [...this.resultados];
       switch (sortBy) {

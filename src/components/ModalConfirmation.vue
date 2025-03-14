@@ -13,6 +13,11 @@
 </template>
 
 <script>
+/**
+ * @vue-component
+ * @name ModalConfirmacion
+ * @description This component provides a confirmation modal that can be displayed to the user to confirm an action. It includes a title, a message, and two buttons: one to confirm and one to cancel. It emits 'confirmado' when the confirm button is clicked and 'cancelado' when the cancel button is clicked.
+ */
 export default {
   props: {
     visible: Boolean,

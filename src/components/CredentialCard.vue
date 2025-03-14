@@ -16,6 +16,11 @@
 </template>
 
   <script>
+  /**
+   * @vue-component
+   * @name CredentialCard
+   * @description This component displays a summary of a credential, including its title, username, creation date, and an associated image. Clicking on the card navigates the user to the detailed view of the credential.
+   */
   import router from "@/router/index.js";
   import defaultImage from '@/assets/icons8-default-image-48.png'
 

@@ -105,7 +105,11 @@ import axios from 'axios';
 import router from '@/router/index.js';
 import {convertToWebp} from '@/helpers/imagesHelper.js';
 import Button from "@/components/Button.vue";
-
+/**
+ * @vue-component
+ * @name EditCredentialForm
+ * @description This component provides a form for editing an existing credential. It fetches the credential details based on the route parameter, pre-fills the form, and allows users to update the title, username, password, URL, notes, and optionally update the image. It uses vee-validate for form validation and sends a PUT request to the backend to update the credential. Upon successful update, it redirects the user to the Vault page.
+ */
 export default {
   name: 'EditCredentialForm',
   components: {

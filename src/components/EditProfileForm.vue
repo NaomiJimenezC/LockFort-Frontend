@@ -101,7 +101,11 @@
   import axios from 'axios';
   import router from '@/router/index.js';
   import { convertToWebp } from "@/helpers/imagesHelper.js";
-  
+  /**
+   * @vue-component
+   * @name EditCredentialForm
+   * @description This component provides a form for editing user profile information. It fetches the user data from local storage, pre-fills the form, and allows users to update their username, email, birthday, and profile photo. It also allows changing the password if the user provides the current password. It uses vee-validate for form validation and sends a PUT request to the backend to update the user's information. Upon successful update, it redirects the user to the UserProfile page.
+   */
   export default {
     name: 'EditCredentialForm',
     components: {

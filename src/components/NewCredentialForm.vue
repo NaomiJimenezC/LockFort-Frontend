@@ -68,8 +68,13 @@ import router from "@/router/index.js";
 import { convertToWebp } from '@/helpers/imagesHelper.js';
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
-
+/**
+ * @vue-component
+ * @name NewCredentialForm
+ * @description This component provides a form for creating new credentials. It includes fields for title, username, password, URL, notes, and an optional image upload. It uses vee-validate for form validation and sends a POST request to the backend to save the new credential. Upon successful creation, it redirects the user to the Vault page.
+ *
 export default {
+
   name: "NewCredentialForm",
   components: {
     Form,

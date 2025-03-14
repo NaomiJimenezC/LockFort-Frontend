@@ -41,7 +41,11 @@
 import { useAuthStore } from '@/storage/authStorage';
 import Button from '@/components/Button.vue';
 
-
+/**
+ * @vue-component
+ * @name UserProfile
+ * @description This component displays the profile information of the currently logged-in user. It retrieves the user data from the auth store and presents the username, email, birthday, and two-factor authentication type. It also provides a button to navigate to the edit profile page.
+ */
   export default {
     name: 'UserProfile',
     components:{Button},

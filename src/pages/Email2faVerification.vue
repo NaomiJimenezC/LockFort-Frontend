@@ -11,7 +11,11 @@ axios.defaults.withXSRFToken = true;
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 const REQUEST_CODE_COOLDOWN_SECONDS = 60;
-
+/**
+ * @vue-component
+ * @name Email2faVerification
+ * @description This component handles the verification process for two-factor authentication using email. It prompts the user to enter a 6-digit code sent to their email address. It includes functionality to request a new code, with a cooldown timer to prevent abuse. Upon successful verification, it stores the access token, logs the user in, and redirects them to the vault.
+ */
 export default {
   name: "Email2faVerification",
   components: { ErrorMessage, Field, Form, Button },
@@ -29,6 +33,13 @@ export default {
     };
   },
   methods: {
+    /**
+     * @function onSubmit
+     * @description Handles the submission of the verification code entered by the user. It sends a POST request to the backend to verify the code. If successful, it stores the access token in local storage, logs the user in using the auth store, and navigates to the vault. If there's an error, it displays an alert message.
+     * @param {object} values - An object containing the form values, specifically the 'code'.
+     * @param {object} actions - An object provided by vee-validate containing form actions (not used in this implementation).
+     * @returns {void}
+     */
     onSubmit(values, actions) {
       if (!actions.errors) {
         axios.post(`${urlBackend}/auth/2fa/verify`, values)
@@ -45,6 +56,11 @@ export default {
           });
       }
     },
+    /**
+     * @function sendEmail
+     * @description Sends a request to the backend to send a new verification code to the user's email address. It disables the request code button and starts a cooldown timer to prevent frequent requests.
+     * @returns {void}
+     */
     sendEmail() {
       if (this.isRequestCodeButtonDisabled) {
         return;
@@ -58,6 +74,11 @@ export default {
           alert("No se pudo solicitar un nuevo código. Por favor, inténtalo de nuevo más tarde.");
         });
     },
+    /**
+     * @function disableRequestCodeButton
+     * @description Disables the request code button and starts a timer for the cooldown period.
+     * @returns {void}
+     */
     disableRequestCodeButton() {
       this.isRequestCodeButtonDisabled = true;
       this.requestCodeButtonTimer = REQUEST_CODE_COOLDOWN_SECONDS;
@@ -68,6 +89,11 @@ export default {
         }
       }, 1000);
     },
+    /**
+     * @function enableRequestCodeButton
+     * @description Enables the request code button and clears the cooldown timer.
+     * @returns {void}
+     */
     enableRequestCodeButton() {
       this.isRequestCodeButtonDisabled = false;
       this.requestCodeButtonTimer = 0;

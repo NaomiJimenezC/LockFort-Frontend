@@ -26,7 +26,11 @@
 <script>
 import Button from "@/components/Button.vue";
 import router from "@/router/index.js";
-
+/**
+ * @vue-component
+ * @name Card2fa
+ * @description This component displays information about a two-factor authentication method. It shows a title, a list of items indicating the status (checked or unchecked), and a button to navigate to the configuration page for that specific 2FA type.
+ */
 export default {
   components: {Button},
   props: {

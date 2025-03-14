@@ -84,7 +84,11 @@
 <script>
 import axios from 'axios';
 import ModalConfirmacion from '@/components/ModalConfirmation.vue';
-
+/**
+ * @vue-component
+ * @name CredentialPage
+ * @description This component displays the detailed information of a specific credential. It fetches the credential data from the backend based on the route parameter, and shows the title, username, password (with an option to toggle visibility), URL (as a clickable link), description, and creation date. It also provides buttons to edit or delete the credential, with a confirmation modal for deletion.
+ */
 export default {
   name: "CredentialPage",
   components: {

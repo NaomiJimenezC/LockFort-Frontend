@@ -5,6 +5,12 @@ import axios from "axios";
 import Button from "@/components/Button.vue";
 
 export default {
+
+  /**
+   * @vue-component
+   * @name RegisterForm
+   * @description Component for handling user registration.
+   */
   name: "RegisterForm",
   components: { Button, Field, Form, ErrorMessage },
   data() {
