@@ -1,0 +1,160 @@
+/* Estilos CSS usando solo variables proporcionadas y metodología BEM con responsive para 768px */
+
+/* Header */
+.vault-view-container{
+  min-height: 100vh;
+  max-width: 1200px; /* Set a maximum width for the container */
+  margin-left: auto; /* Center the container horizontally */
+  margin-right: auto;
+  margin-top: 8rem;
+}
+.vault-view__title {
+  text-align: left;
+  color: var(--color-grises-800);
+  font-size: 1.75rem;
+  font-family: var(--tipografia-titulos);
+  margin-bottom: 1rem;
+}
+
+/* Barra de búsqueda */
+.vault-view__search-section {
+  display: flex;
+  gap: 0.9375rem;
+  margin-bottom: 1.875rem;
+  align-items: center;
+}
+
+.vault-view__search-bar {
+  position: relative;
+  flex-grow: 1;
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar__icon {
+  position: absolute;
+  left: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-grises-500);
+}
+
+.search-bar__input {
+  width: 100%;
+  padding: 0.625rem 0.9375rem 0.625rem 2.1875rem;
+  border-radius: 0.3125rem;
+  border: 1px solid var(--color-grises-300);
+  background-color: white;
+  font-size: 0.875rem;
+  font-family: var(--tipografia-titulos);
+}
+
+.vault-view__add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primario-600);
+  color: white;
+  border: none;
+  border-radius: 0.3125rem;
+  width: auto;
+  height: auto;
+  padding: 0.625rem 0.9375rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 0.625rem;
+}
+
+/* Panel de filtros */
+.vault-view__filter-section {
+  margin-bottom: 1.875rem;
+}
+
+.vault-view__main-content {
+  display: flex; /* Enable flex layout for main content */
+  gap: 1.25rem;
+  margin-bottom: 1.875rem;
+}
+
+/* Grid de credenciales */
+.vault-view__credentials-grid {
+  flex-grow: 1; /* Allow the grid to take remaining space */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+/* Footer */
+.credentials-page__footer {
+  display: none;
+}
+
+/* Paginación */
+.vault-view__pagination {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+  justify-content: flex-start;
+}
+
+.vault-view__pagination-button {
+  background-color: white;
+  color: var(--color-primario-600);
+  border: 1px solid var(--color-primario-600);
+  border-radius: 0.3125rem;
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.vault-view__pagination-button:disabled {
+  color: var(--color-grises-400);
+  border-color: var(--color-grises-400);
+  cursor: not-allowed;
+}
+
+/* Resultados info */
+.vault-view__results-info {
+  text-align: left;
+  color: var(--color-grises-400);
+  margin-top: 1.25rem;
+  font-family: var(--tipografia-titulos);
+  font-size: 0.75rem;
+}
+
+/* Responsive design para pantallas de hasta 768px */
+@media (max-width: 768px) {
+  .vault-view__search-section {
+    flex-direction: column;
+    gap: 0.9375rem;
+  }
+
+  .vault-view__add-button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .vault-view__credentials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vault-view__filter-menu {
+    width: 100%;
+    margin-bottom: 1.25rem;
+  }
+
+  .vault-view__main-content {
+    flex-direction: column; /* Stack elements on smaller screens */
+  }
+
+  .filter-panel {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+}

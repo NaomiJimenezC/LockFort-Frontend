@@ -1,11 +1,30 @@
 <template>
   <section class="vault-view-container">
-    <h1>Tus credenciales</h1>
-    <section>
-      <SearchBar :data="resultados" @filtered-data="updateResults" />
-      <Button :action="() => router().push({ name: 'New Credential' })" text="+" />
-      <FilterMenu :results="resultadosOrdenados" @sort="handleSortResults" />
-      <div class="grid-container">
+    <h1 class="vault-view__title">Tus credenciales</h1>
+
+    <section class="vault-view__search-section">
+      <SearchBar
+          :data="resultados"
+          @filtered-data="updateResults"
+          class="vault-view__search-bar"
+      />
+      <Button
+          :action="() => router().push({ name: 'New Credential' })"
+          text="+"
+          class="vault-view__add-button"
+      />
+    </section>
+
+    <div class="vault-view__main-content">
+      <section class="vault-view__filter-section">
+        <FilterMenu
+            :results="resultadosOrdenados"
+            @sort="handleSortResults"
+            class="vault-view__filter-menu"
+        />
+      </section>
+
+      <div class="vault-view__credentials-grid">
         <CredentialCard
             v-for="credential in resultadosOrdenados"
             :key="credential.id"
@@ -14,22 +33,42 @@
             :username="credential.encrypted_username"
             :dateCreation="credential.created_at"
             :web_image="credential.web_image"
-        />
+            class="vault-view__credential-card"
+        >
+          <template #avatar>
+            <div class="vault-view__credential-card-circle"></div>
+          </template>
+          <template #title>
+            <div class="vault-view__credential-card-title">{{ credential.title }}</div>
+          </template>
+          <template #subtitle>
+            <div class="vault-view__credential-card-subtitle">{{ credential.encrypted_username }}</div>
+          </template>
+          <template #date>
+            <div class="vault-view__credential-card-date">{{ formatDate(credential.created_at) }}</div>
+          </template>
+        </CredentialCard>
       </div>
-      <!-- Paginación -->
-      <section class="pagination">
-        <Button
-            :disabled="!pagination.prev_page_url"
-            @click="fetchPage(pagination.prev_page_url)"
-            text="Anterior"
-        />
-        <Button
-            :disabled="!pagination.next_page_url"
-            @click="fetchPage(pagination.next_page_url)"
-            text="Siguiente"
-        />
-      </section>
+    </div>
+
+    <section class="vault-view__pagination">
+      <Button
+          :disabled="!pagination.prev_page_url"
+          @click="fetchPage(pagination.prev_page_url)"
+          text="Anterior"
+          class="vault-view__pagination-button vault-view__pagination-button--previous"
+      />
+      <Button
+          :disabled="!pagination.next_page_url"
+          @click="fetchPage(pagination.next_page_url)"
+          text="Siguiente"
+          class="vault-view__pagination-button vault-view__pagination-button--next"
+      />
     </section>
+
+    <div class="vault-view__results-info">
+      1 de 1 resultados
+    </div>
   </section>
 </template>
 
@@ -47,10 +86,11 @@ export default {
     FilterMenu,
     SearchBar,
     Button,
-    CredentialCard,
+    CredentialCard
   },
   data() {
     return {
+      urlBackend: import.meta.env.VITE_BACKEND_URL,
       resultados: [],          // Datos originales obtenidos del backend
       resultadosOrdenados: [], // Datos filtrados/ordenados que se muestran
       pagination: {
@@ -69,14 +109,10 @@ export default {
       return router;
     },
     obtenerDatos(url) {
-      console.log(localStorage.getItem('auth'))
-      axios.get(url,{withCredentials:true,withXSRFToken:true})
+      axios.get(url, {withCredentials: true, withXSRFToken: true})
           .then(response => {
-            // Se asume que la API devuelve la data paginada en response.data.data
             this.resultados = response.data.data;
-            // Inicialmente, los datos mostrados son los originales
             this.resultadosOrdenados = response.data.data;
-            // Actualización de metadatos de paginación
             this.pagination.current_page = response.data.current_page;
             this.pagination.last_page = response.data.last_page;
             this.pagination.next_page_url = response.data.next_page_url;
@@ -92,11 +128,9 @@ export default {
       }
     },
     updateResults(filtered) {
-      // Se actualiza el array de datos mostrados según el filtro aplicado en SearchBar
       this.resultadosOrdenados = filtered;
     },
     handleSortResults(sortBy) {
-      // Se realiza el ordenamiento según el criterio recibido del FilterMenu
       let sortedArray = [...this.resultados];
       switch (sortBy) {
         case 'ascendente':
@@ -116,32 +150,14 @@ export default {
       }
       this.resultadosOrdenados = sortedArray;
     },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('es-ES', options);
+    }
   },
 };
 </script>
 
-<style scoped>
-.vault-view-container {
-  font-family: sans-serif;
-  padding: 20px;
-}
-
-h1 {
-  margin-bottom: 20px;
-  color: #2D3748;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  padding: 20px 0;
-}
-
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
+<style scoped lang="sass">
+@use '@/sass/pages/vault'
 </style>
