@@ -43,5 +43,5 @@ export default {
 </script>
 
 <style scoped lang="sass">
-@use "@/SASS/components/card2fa"
+@use "@/sass/components/card2fa"
 </style>

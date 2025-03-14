@@ -1,6 +1,5 @@
-@use "@/SASS/abstracts/variables";
+@use "@/sass/abstracts/variables";
 body {
-  background-color: var(--color-secundario-400);
   display: flex; /* Añadimos flexbox al body */
   flex-direction: column; /* Para que los elementos se apilen verticalmente */
   justify-content: center; /* Centra horizontalmente en el body */

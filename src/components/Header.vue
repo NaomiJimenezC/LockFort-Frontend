@@ -59,5 +59,5 @@ export default {
 </script>
 
 <style scoped lang="sass">
-@use "@/SASS/components/header"
+@use "@/sass/components/header"
 </style>

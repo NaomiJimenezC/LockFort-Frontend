@@ -65,5 +65,5 @@ export default {
 </template>
 
 <style scoped lang="sass">
- @use "@/SASS/pages/home"
+ @use "@/sass/pages/home"
 </style>

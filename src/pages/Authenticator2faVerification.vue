@@ -127,5 +127,5 @@ Copy
 </template>
 
 <style scoped lang="sass">
-@use "@/SASS/pages/authAppVerificator"
+@use "@/sass/pages/authAppVerificator"
 </style>

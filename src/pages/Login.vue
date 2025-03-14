@@ -31,5 +31,5 @@ export default defineComponent({
 </template>
 
 <style lang="sass" scoped>
-    @use "@/SASS/pages/login"
+    @use "@/sass/pages/login"
 </style>

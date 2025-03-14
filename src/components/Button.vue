@@ -21,5 +21,5 @@ export default {
   <button type="button" @click="action" text="{{text}}">{{text}}</button>
 </template>
 <style scoped lang="sass">
-@use "@/SASS/components/button"
+@use "@/sass/components/button"
 </style>

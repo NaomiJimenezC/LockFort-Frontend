@@ -35,5 +35,5 @@ export default {
 </script>
 
 <style scoped lang="sass">
-@use "@/SASS/pages/selector2fa"
+@use "@/sass/pages/selector2fa"
 </style>

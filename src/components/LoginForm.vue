@@ -118,5 +118,5 @@ export default {
 
 
 <style scoped lang="sass">
- @use "@/SASS/components/form"
+ @use "@/sass/components/form"
 </style>

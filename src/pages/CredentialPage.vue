@@ -156,5 +156,5 @@ export default {
 </script>
 
 <style scoped lang="sass">
-@use '@/SASS/pages/credentialInfo'
+@use '@/sass/pages/credentialInfo'
 </style>

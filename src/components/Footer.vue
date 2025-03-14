@@ -62,5 +62,5 @@ export default {
 </script>
 
 <style lang="sass">
-  @use "@/SASS/components/_footer.scss";
+  @use "@/sass/components/_footer.scss";
 </style>

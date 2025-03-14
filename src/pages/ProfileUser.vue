@@ -83,7 +83,7 @@ import Button from '@/components/Button.vue';
   </script>
 
 <style lang="sass" scoped>
-@use '@/SASS/abstracts/variables'
+@use '@/sass/abstracts/variables'
 
 .user-profile
   max-width: 800px

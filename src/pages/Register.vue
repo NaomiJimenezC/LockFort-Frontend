@@ -29,5 +29,5 @@ export default {
 </template>
 
 <style scoped lang="sass">
-@use "@/SASS/pages/login"
+@use "@/sass/pages/login"
 </style>

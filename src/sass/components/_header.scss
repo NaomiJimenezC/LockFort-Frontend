@@ -1,12 +1,12 @@
 /* _header.scss */
 
-@use "../abstracts/variables" as v; // Import variables
+@use "@/sass/abstracts/variables"; // Import variables
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem; // Example padding, adjust as needed
+  padding: 1rem 2rem;
   background-color: var(--color-primario-800);
 
   &__section {
@@ -22,8 +22,8 @@
 
   &__title {
     font-family: var(--tipografia-titulos), sans-serif;
-    font-size: var(--desktop-h1); // Example title size - H2 desktop from your variables
-    color: var(--color-secundario-800); // Example text color - lightest secondary color, adjust as needed
+    font-size: var(--desktop-h1);
+    color: var(--color-secundario-800);
     margin: 0;
   }
 
@@ -35,7 +35,7 @@
   }
 
   &__item {
-    margin-left: 3rem; // Spacing between nav items, adjust as needed
+    margin-left: 3rem;
     color: var(--color-secundario-800);
   }
 

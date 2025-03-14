@@ -126,5 +126,5 @@ export default {
 </template>
 
 <style scoped lang="sass">
-@use '@/SASS/pages/emailVerificator'
+@use '@/sass/pages/emailVerificator'
 </style>
