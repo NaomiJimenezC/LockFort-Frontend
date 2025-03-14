@@ -94,13 +94,14 @@ VITE_BACKEND_URL=http://your-backend-url.com/api
 5. **Gestión de Perfil**: Actualiza tu información personal y de seguridad
 
 ## Futuras mejoras
-Comprobador de contraseña
-Generador de contraseñas seguras
-Modo oscuro
-Refactorización
+- Comprobador de contraseña
+- Generador de contraseñas seguras
+- Modo oscuro
+- Refactorización
 
 ## Errores conocidos
-El menú de ordenación de entrada en vault no funciona
+- El menú de ordenación de entrada en vault no funciona
+- Las fotos de las credenciales no se cambian
 
 ## Contribución
 Para contribuir a LockFort, por favor sigue estas pautas:
