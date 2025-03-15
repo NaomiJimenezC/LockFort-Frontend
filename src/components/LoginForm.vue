@@ -36,10 +36,13 @@ export default {
   methods: {
     async onSubmit(values, { setErrors }) {
       try {
-          await axios.post(`${urlBackend}/auth/login`, values, {headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            }});
-          await router.push("/2fa"); // Redirect on success
+          await axios.post(`${urlBackend}/auth/login`, values)
+              .then(response => {
+                if (response.status === 200) {
+                  localStorage.setItem("token", response.data.access_token);
+                  router.push("/vault");
+                }
+              })
       } catch (error) {
         if (error.response) {
           const responseData = error.response.data;

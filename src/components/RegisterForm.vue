@@ -15,7 +15,6 @@ export default {
   components: { Button, Field, Form, ErrorMessage },
   data() {
     const urlBackend = import.meta.env.VITE_BACKEND_URL;
-    const csrf = urlBackend.replace(/\/api$/, '');
     const schema = yup.object().shape({
       username: yup.string().required("El username es obligatorio"),
       birthday: yup.date().required("La fecha de nacimiento es obligatoria"),
@@ -38,7 +37,6 @@ export default {
     return {
       schema,
       urlBackend,
-      csrf
     };
   },
   methods: {
