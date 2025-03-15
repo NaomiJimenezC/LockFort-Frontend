@@ -1,0 +1,6 @@
+[[redirects]]
+  from = "/api/*"
+  to = "http://34.175.245.185/:splat"
+  status = 200
+  force = true
+  proxy = true
