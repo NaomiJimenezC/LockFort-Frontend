@@ -5,6 +5,8 @@ import { useRouter } from "vue-router";
 import * as yup from "yup";
 import axios from "axios";
 import router from "@/router/index.js";
+import {useAuthStore} from "@/storage/authStorage.js";
+import authStore from "npm/lib/utils/auth.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
@@ -28,7 +30,9 @@ export default {
         .string()
         .required("Ingrese la contraseña")
         .min(8),
-    });
+        }
+    );
+
     return {
       schema,
     };
@@ -40,6 +44,8 @@ export default {
               .then(response => {
                 if (response.status === 200) {
                   localStorage.setItem("token", response.data.access_token);
+                  authStore.login(response.data.user);
+
                   router.push("/vault");
                 }
               })
