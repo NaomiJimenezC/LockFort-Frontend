@@ -6,7 +6,6 @@ import * as yup from "yup";
 import axios from "axios";
 import router from "@/router/index.js";
 import {useAuthStore} from "@/storage/authStorage.js";
-import authStore from "npm/lib/utils/auth.js";
 
 const urlBackend = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,20 +20,22 @@ export default {
   data() {
     const schema = yup.object().shape({
       email: yup
-        .string()
-        .required("contraseña incorrecta")
-        .matches(
-          /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm
-        ),
+          .string()
+          .required("contraseña incorrecta")
+          .matches(
+              /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm,
+              "Formato de correo inválido"
+          ),
       password: yup
-        .string()
-        .required("Ingrese la contraseña")
-        .min(8),
-        }
-    );
+          .string()
+          .required("Ingrese la contraseña")
+          .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    });
+    const authStore = useAuthStore(); // Se instancia la tienda de autenticación
 
     return {
       schema,
+      authStore,
     };
   },
   methods: {
@@ -44,7 +45,7 @@ export default {
               .then(response => {
                 if (response.status === 200) {
                   localStorage.setItem("token", response.data.access_token);
-                  authStore.login(response.data.user);
+                  this.authStore.login(response.data.user);
 
                   router.push("/vault");
                 }
